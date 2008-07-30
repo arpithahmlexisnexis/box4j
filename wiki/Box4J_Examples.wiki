@@ -1,0 +1,142 @@
+{{{
+
+/**
+ * 
+ */
+package cn.com.believer.songyuanframework.openapi.storage.box.examples;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.com.believer.songyuanframework.openapi.storage.box.BoxExternalAPI;
+import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstant;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.SimpleBoxImpl;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.BaseBoxResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.core.BoxException;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.CreateFolderResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.GetAccountTreeResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.GetAuthTokenResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.PublicShareResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.RegisterNewUserResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.UploadResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.object.core.UploadFileStatus;
+
+/**
+ * @author jjia
+ * 
+ */
+public class Tutorial {
+
+    /** the api key, you can change it to yours. */
+    public static final String API_KEY = "e7ak8t2je0rxoq97k9sl2fh2mld1dn6x";
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        // the global api interface
+        BoxExternalAPI iBoxExternalAPI = new SimpleBoxImpl();
+
+        try {
+            // create a user, first we check if email is ok to register?
+            String email = "test" + System.currentTimeMillis() + "@test.com";
+            BaseBoxResponse verifyEmailResponse = iBoxExternalAPI
+                    .verifyRegistrationEmail(API_KEY, email);
+
+            // quit if email is not ok.
+            if (!BoxConstant.STATUS_EMAIL_OK.equals(verifyEmailResponse
+                    .getStatus())) {
+                System.out.println("email is not ok to register! status code="
+                        + verifyEmailResponse.getStatus());
+                System.exit(0);
+            }
+
+            // now we create a new box.net account
+            String password = "888888";
+            RegisterNewUserResponse registerNewUserResponse = iBoxExternalAPI
+                    .registerNewUser(API_KEY, email, password);
+            if (!BoxConstant.STATUS_SUCCESSFUL_REGISTER
+                    .equals(registerNewUserResponse.getStatus())) {
+                System.out
+                        .println("unable to register a box.net user! status code="
+                                + registerNewUserResponse.getStatus());
+                System.exit(0);
+            }
+
+            // waiting...
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // login with this account
+            GetAuthTokenResponse getAuthTokenResponse = iBoxExternalAPI
+                    .authentication(email, password, API_KEY);
+            String authToken = getAuthTokenResponse.getAuthToken();
+
+            // create a folder
+            CreateFolderResponse createFolderResponse = iBoxExternalAPI
+                    .createFolder(API_KEY, authToken, "0", "folderName"
+                            + System.currentTimeMillis(), false);
+            String createdFolderId = createFolderResponse.getFolder()
+                    .getFolderId();
+
+            // create a temp file for upload
+            File tmpFile = File.createTempFile("pattern"
+                    + System.currentTimeMillis(), ".txt");
+            tmpFile.deleteOnExit();
+            BufferedWriter out = new BufferedWriter(new FileWriter(tmpFile));
+            out.write("this is a test file for upload"
+                    + +System.currentTimeMillis());
+            out.close();
+
+            // upload a file to the created folder.
+            List fileList = new ArrayList();
+            fileList.add(tmpFile);
+            UploadResponse uploadResponse = iBoxExternalAPI.uploadFiles(
+                    authToken, createdFolderId, fileList);
+            UploadFileStatus uploadFileStatus = (UploadFileStatus) uploadResponse
+                    .getFileStatusList().get(0);
+            String uploadedFileId = uploadFileStatus.getSoapFileInfo()
+                    .getFileId();
+
+            // share this folder
+            PublicShareResponse publicShareResponse = iBoxExternalAPI
+                    .publicShare(API_KEY, authToken, "folder", "888888",
+                            createdFolderId, "this is my public folder !", null);
+
+            // get account file/folder tree structure
+            String[] params = { "nozip" };
+            GetAccountTreeResponse getAccountTreeResponse = iBoxExternalAPI
+                    .getAccountTree(API_KEY, authToken, "0", params);
+
+            // download the file
+            File tmpFile2 = new File("downloadedFileNo."
+                    + System.currentTimeMillis() + ".txt");
+            tmpFile2.createNewFile();
+            File outFile = iBoxExternalAPI.downloadFile(authToken,
+                    uploadedFileId, tmpFile2);
+
+            // delete this file
+            BaseBoxResponse deleteResponse = iBoxExternalAPI.delete(API_KEY,
+                    authToken, "file", uploadedFileId);
+
+            // logout
+            BaseBoxResponse logoutResponse = iBoxExternalAPI.logout(API_KEY,
+                    authToken);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (BoxException e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+
+
+}}}

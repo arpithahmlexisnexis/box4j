@@ -38,7 +38,7 @@ public class Tutorial {
      * @param args
      */
     public static void main(String[] args) {
-        // the global api interface
+        // the global api interface, you just need to instance it only one time in your app
         BoxExternalAPI iBoxExternalAPI = new SimpleBoxImpl();
 
         try {

@@ -1,4 +1,6 @@
 {{{
+
+
 /**
  * 
  */
@@ -12,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.com.believer.songyuanframework.openapi.storage.box.BoxExternalAPI;
-import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstant;
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxRequestFactory;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderResponse;
@@ -23,11 +24,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTo
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicShareRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RegisterNewUserRequest;
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.RegisterNewUserResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.UploadRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.UploadResponse;
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailRequest;
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.SimpleBoxImpl;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxException;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.UploadResult;
@@ -49,41 +47,12 @@ public class Tutorial {
         BoxExternalAPI iBoxExternalAPI = new SimpleBoxImpl();
 
         try {
-            // create a user, first we check if email is ok to register?
+            // create a user.
             String email = "test" + System.currentTimeMillis() + "@test.com";
-            VerifyRegistrationEmailRequest verifyRegistrationEmailRequest = BoxRequestFactory
-                    .createVerifyRegistrationEmailRequest(API_KEY, email);
-            VerifyRegistrationEmailResponse verifyEmailResponse = iBoxExternalAPI
-                    .verifyRegistrationEmail(verifyRegistrationEmailRequest);
-
-            // quit if email is not ok.
-            if (!BoxConstant.STATUS_EMAIL_OK.equals(verifyEmailResponse
-                    .getStatus())) {
-                System.out.println("email is not ok to register! status code="
-                        + verifyEmailResponse.getStatus());
-                System.exit(0);
-            }
-
-            // now we create a new box.net account
             String password = "888888";
             RegisterNewUserRequest registerNewUserRequest = BoxRequestFactory
                     .createRegisterNewUserRequest(API_KEY, email, password);
-            RegisterNewUserResponse registerNewUserResponse = iBoxExternalAPI
-                    .registerNewUser(registerNewUserRequest);
-            if (!BoxConstant.STATUS_SUCCESSFUL_REGISTER
-                    .equals(registerNewUserResponse.getStatus())) {
-                System.out
-                        .println("unable to register a box.net user! status code="
-                                + registerNewUserResponse.getStatus());
-                System.exit(0);
-            }
-
-            // waiting...
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            iBoxExternalAPI.registerNewUser(registerNewUserRequest);
 
             // login with this account
             GetAuthTokenResponse getAuthTokenResponse = iBoxExternalAPI
@@ -168,5 +137,6 @@ public class Tutorial {
 
     }
 }
+
 
 }}}

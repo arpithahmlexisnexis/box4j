@@ -36,7 +36,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.UploadResul
  */
 public class Tutorial {
 
-    /** the api key, you can change it to yours. */
+    /** enter your api key here. */
     public static final String API_KEY = "e7ak8t2je0rxoq97k9sl2fh2mld1dn6x";
 
     /**

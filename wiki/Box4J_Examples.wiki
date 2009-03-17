@@ -54,9 +54,33 @@ public class Tutorial {
                     .createRegisterNewUserRequest(API_KEY, email, password);
             iBoxExternalAPI.registerNewUser(registerNewUserRequest);
 
-            // login with this account
-            GetAuthTokenResponse getAuthTokenResponse = iBoxExternalAPI
-                    .authentication(email, password, API_KEY);
+
+            System.out.println("Your username is " + email);
+            System.out.println("Your password is 888888");
+
+            // get a ticket by API key.
+            GetTicketRequest getTicketRequest = BoxRequestFactory.createGetTicketRequest(API_KEY);
+            GetTicketResponse getTicketResponse = iBoxExternalAPI.getTicket(getTicketRequest);
+
+            // after you get the ticket, you need to navigate to the URL
+            // http://www.box.net/api/1.0/auth/<ticket> to enter the user name and password to authenticate.
+            System.out.println("Your ticket is " + getTicketResponse.getTicket());
+
+            System.out.println("press any key after you are authenticated from box.net page.");
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                String temp = br.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            GetAuthTokenRequest getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(API_KEY,
+                    getTicketResponse.getTicket());
+            GetAuthTokenResponse getAuthTokenResponse = iBoxExternalAPI.getAuthToken(getAuthTokenRequest);
+
+            if (BoxConstant.STATUS_NOT_LOGGED_IN.equals(getAuthTokenResponse.getStatus())) {
+                return;
+            }
             String authToken = getAuthTokenResponse.getAuthToken();
 
             // create a folder

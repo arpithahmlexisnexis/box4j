@@ -7,12 +7,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 
 import cn.com.believer.songyuanframework.openapi.storage.box.BoxExternalAPI;
 import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstant;
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxRequestFactory;
+import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxResponseFactory;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToTagRequest;
@@ -27,6 +34,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.ExportTag
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.ExportTagsResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoResponse;
@@ -57,6 +65,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.UploadRes
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.SimpleBoxImpl;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.core.BoxHTTPManager;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxAbstractFile;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxException;
 import junit.framework.TestCase;
@@ -248,25 +257,25 @@ public class BaseBoxTestCase extends TestCase {
             GetAuthTokenResponse getAuthTokenResponse;
 
             // wrong API key
-            getAuthTokenResponse = boxExternalAPI.authentication(correctEmail,
+            getAuthTokenResponse = simAuthentication(correctEmail,
                     loginPassword, incorrectApiKey);
             assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED,
                     getAuthTokenResponse.getStatus());
 
             // wrong email format
-            getAuthTokenResponse = boxExternalAPI.authentication(
+            getAuthTokenResponse = simAuthentication(
                     incorrectEmail, loginPassword, apiKey);
             assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getAuthTokenResponse
                     .getStatus());
 
             // wrong password
-            getAuthTokenResponse = boxExternalAPI.authentication(correctEmail,
+            getAuthTokenResponse = simAuthentication(correctEmail,
                     incorrectPassword, apiKey);
             assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getAuthTokenResponse
                     .getStatus());
 
             // login OK
-            getAuthTokenResponse = boxExternalAPI.authentication(correctEmail,
+            getAuthTokenResponse = simAuthentication(correctEmail,
                     loginPassword, apiKey);
             assertEquals(BoxConstant.STATUS_GET_AUTH_TOKEN_OK,
                     getAuthTokenResponse.getStatus());
@@ -1102,6 +1111,75 @@ public class BaseBoxTestCase extends TestCase {
         } catch (BoxException e) {
             e.printStackTrace();
             fail(e.getMessage());
+        }
+    }
+    
+
+    /**
+     * This method is used to simulate authorization process.
+     * 
+     * @param boxUName
+     *            login name
+     * @param boxPWord
+     *            login password
+     * @param apiKey
+     *            api key
+     * @return response
+     * @throws IOException
+     *             IO exception
+     * @throws BoxException
+     *             box exception
+     */
+    private GetAuthTokenResponse simAuthentication(String boxUName,
+            String boxPWord, String apiKey) throws IOException, BoxException {
+        GetTicketRequest getTicketRequest = BoxRequestFactory
+                .createGetTicketRequest(apiKey);
+        GetTicketResponse getTicketResponse = boxExternalAPI
+                .getTicket(getTicketRequest);
+        if (!BoxConstant.STATUS_GET_TICKET_OK.equals(getTicketResponse
+                .getStatus())) {
+            GetAuthTokenResponse getAuthTokenResponse = BoxResponseFactory
+                    .createGetAuthTokenResponse();
+            getAuthTokenResponse.setStatus(getTicketResponse.getStatus());
+            return getAuthTokenResponse;
+        } else {
+            Properties config = BoxHTTPManager.getBoxHTTPManager().getConfig();
+            String apiUrlPrefix = config
+                    .getProperty(BoxConstant.CONFIG_API_URL_PREFIX);
+            String apiVersion = config
+                    .getProperty(BoxConstant.CONFIG_API_VERSION);
+
+            // first redirect that page
+            HttpClient hc = new HttpClient();
+
+            StringBuffer urlBuff = new StringBuffer();
+            urlBuff.append(apiUrlPrefix);
+            urlBuff.append(BoxConstant.SLASH_STRING);
+            urlBuff.append(apiVersion);
+            urlBuff.append(BoxConstant.SLASH_STRING);
+            urlBuff.append(BoxConstant.AUTH_URL_STRING);
+            urlBuff.append(BoxConstant.SLASH_STRING);
+            urlBuff.append(getTicketResponse.getTicket());
+            GetMethod gMethod = new GetMethod(urlBuff.toString());
+            hc.executeMethod(gMethod);
+
+            // login use username/password
+            PostMethod pMethod = new PostMethod(urlBuff.toString());
+
+            NameValuePair unamePair = new NameValuePair("login", boxUName);
+            NameValuePair pwordPair = new NameValuePair("password", boxPWord);
+            NameValuePair dologinPair = new NameValuePair("dologin", "1");
+            pMethod.setRequestBody(new NameValuePair[] { unamePair, pwordPair,
+                    dologinPair });
+            pMethod.addRequestHeader("Referer", urlBuff.toString());
+            hc.executeMethod(pMethod);
+
+            GetAuthTokenRequest getAuthTokenRequest = BoxRequestFactory
+                    .createGetAuthTokenRequest(apiKey, getTicketResponse
+                            .getTicket());
+            GetAuthTokenResponse getAuthTokenResponse = boxExternalAPI
+                    .getAuthToken(getAuthTokenRequest);
+            return getAuthTokenResponse;
         }
     }
 }

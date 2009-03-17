@@ -91,24 +91,6 @@ public interface BoxExternalAPI {
             throws IOException, BoxException;
 
     /**
-     * Authenticate a box user.
-     * 
-     * @param boxUName
-     *            login name
-     * @param boxPWord
-     *            login password
-     * @param apiKey
-     *            API key
-     * @return GetAuthTokenResponse object.
-     * @throws IOException
-     *             IO exception
-     * @throws BoxException
-     *             box exception
-     */
-    GetAuthTokenResponse authentication(String boxUName, String boxPWord,
-            String apiKey) throws IOException, BoxException;
-
-    /**
      * This method is used to logout a user. On successful logout method will
      * return 'logout_ok' as status. If logout wasn't successful, then status
      * filed can be: 'invalid_auth_token' when auth_token is invalid.

@@ -4,6 +4,7 @@
 package cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,27 +34,23 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
     public static final String PARAMS_KEY_ONELEVEL = "onelevel";
 
     /**
-     * this parameter decides whether show files or not. public static final
-     * String PARAMS_KEY_NOFILES = "nofiles";
+     * this parameter decides whether show files or not. public static final String PARAMS_KEY_NOFILES = "nofiles";
      * 
      * /** this parameter decides whether zip the content with base64 encoding.
      */
-    public static final String PARAMS_KEY_NOZIP = "nozip";
+    public static final String PARAMS_KEY_NOZIP    = "nozip";
 
     /**
      * This method is used to get a user's files and folders tree.
      * 
-     * 'folder_id' param defines root folder from which the tree begins.
-     * 'params' is array of string where you can set additional parameters,
-     * which are: onelevel - make a tree of one level depth, so you will get
-     * only files and folders stored in folder which folder_id you have
-     * provided. nofiles - include folders only in result tree, no files. nozip -
-     * do not zip tree xml.
+     * 'folder_id' param defines root folder from which the tree begins. 'params' is array of string where you can set
+     * additional parameters, which are: onelevel - make a tree of one level depth, so you will get only files and
+     * folders stored in folder which folder_id you have provided. nofiles - include folders only in result tree, no
+     * files. nozip - do not zip tree xml.
      * 
-     * On successful result you will receive 'listing_ok' as status and base64
-     * encoded zipped tree xml. So you have to decode the received tree, then
-     * unzip it (if you haven't set 'nozip' param) and you will get xml like
-     * this: (note that updatedand createdare UNIX timestamps in PST).
+     * On successful result you will receive 'listing_ok' as status and base64 encoded zipped tree xml. So you have to
+     * decode the received tree, then unzip it (if you haven't set 'nozip' param) and you will get xml like this: (note
+     * that updatedand createdare UNIX timestamps in PST).
      * 
      * @param getAccountTreeRequest
      *            request
@@ -63,11 +60,9 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
      * @throws BoxException
      *             box exception
      */
-    public GetAccountTreeResponse getAccountTree(
-            GetAccountTreeRequest getAccountTreeRequest) throws IOException,
+    public GetAccountTreeResponse getAccountTree(GetAccountTreeRequest getAccountTreeRequest) throws IOException,
             BoxException {
-        GetAccountTreeResponse getAccountTreeResponse = BoxResponseFactory
-                .createGetAccountTreeResponse();
+        GetAccountTreeResponse getAccountTreeResponse = BoxResponseFactory.createGetAccountTreeResponse();
 
         String apiKey = getAccountTreeRequest.getApiKey();
         String authToken = getAccountTreeRequest.getAuthToken();
@@ -75,8 +70,7 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
         String[] params = getAccountTreeRequest.getParams();
 
         if (BoxConstant.CONFIG_API_REQUEST_FORMAT_REST.equals(apiRequestFormat)) {
-            StringBuffer urlBuff = super
-                    .getRestUrl(BoxConstant.ACTION_NAME_GET_ACCOUNT_TREE);
+            StringBuffer urlBuff = super.getRestUrl(BoxConstant.ACTION_NAME_GET_ACCOUNT_TREE);
             urlBuff.append(BoxConstant.AND_SIGN_STRING);
             urlBuff.append(BoxConstant.PARAM_NAME_API_KEY);
             urlBuff.append(BoxConstant.EQUALS_SIGN_STRING);
@@ -106,48 +100,36 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
             try {
                 Document doc = httpManager.doGet(urlBuff.toString());
                 Element responseElm = doc.getRootElement();
-                Element statusElm = responseElm
-                        .element(BoxConstant.PARAM_NAME_STATUS);
+                Element statusElm = responseElm.element(BoxConstant.PARAM_NAME_STATUS);
                 String status = statusElm.getText();
                 getAccountTreeResponse.setStatus(status);
                 if (BoxConstant.STATUS_LISTING_OK.equals(status)) {
-                    Element treeElm = responseElm
-                            .element(BoxConstant.PARAM_NAME_TREE);
+                    Element treeElm = responseElm.element(BoxConstant.PARAM_NAME_TREE);
 
-                    if (params != null
-                            && Arrays.asList(params).contains(PARAMS_KEY_NOZIP)) {
+                    if (params != null && Arrays.asList(params).contains(PARAMS_KEY_NOZIP)) {
                         DefaultMutableTreeNode treeModel = transferTree2Model(treeElm);
                         getAccountTreeResponse.setTree(treeModel);
                     } else {
-                        getAccountTreeResponse
-                                .setEncodedTree(treeElm.getText());
+                        getAccountTreeResponse.setEncodedTree(treeElm.getText());
                     }
                 }
             } catch (DocumentException e) {
-                BoxException be = new BoxException(
-                        "failed to parse to a document.", e);
+                BoxException be = new BoxException("failed to parse to a document.", e);
                 be.setStatus(getAccountTreeResponse.getStatus());
                 throw be;
             }
 
-        } else if (BoxConstant.CONFIG_API_REQUEST_FORMAT_XML
-                .equals(apiRequestFormat)) {
+        } else if (BoxConstant.CONFIG_API_REQUEST_FORMAT_XML.equals(apiRequestFormat)) {
 
             Document document = DocumentHelper.createDocument();
-            Element requestElm = DocumentHelper
-                    .createElement(BoxConstant.PARAM_NAME_REQUEST);
+            Element requestElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_REQUEST);
             document.add(requestElm);
 
-            Element actionElm = DocumentHelper
-                    .createElement(BoxConstant.PARAM_NAME_ACTION);
-            Element apiKeyElm = DocumentHelper
-                    .createElement(BoxConstant.PARAM_NAME_API_KEY);
-            Element authTokenElm = DocumentHelper
-                    .createElement(BoxConstant.PARAM_NAME_AUTH_TOKEN);
-            Element folderIdElm = DocumentHelper
-                    .createElement(BoxConstant.PARAM_NAME_FOLDER_ID);
-            Element paramsElm = DocumentHelper
-                    .createElement(BoxConstant.PARAM_NAME_PARAMS);
+            Element actionElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_ACTION);
+            Element apiKeyElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_API_KEY);
+            Element authTokenElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_AUTH_TOKEN);
+            Element folderIdElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_FOLDER_ID);
+            Element paramsElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_PARAMS);
             requestElm.add(actionElm);
             requestElm.add(apiKeyElm);
             requestElm.add(authTokenElm);
@@ -161,8 +143,7 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
             if (params != null) {
                 for (int i = 0; i < params.length; i++) {
                     String param = params[i];
-                    Element itemElm = DocumentHelper
-                            .createElement(BoxConstant.PARAM_NAME_ITEM);
+                    Element itemElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_ITEM);
                     itemElm.setText(param);
                     paramsElm.add(itemElm);
                 }
@@ -172,32 +153,26 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
             try {
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElm = doc.getRootElement();
-                Element statusElm = responseElm
-                        .element(BoxConstant.PARAM_NAME_STATUS);
+                Element statusElm = responseElm.element(BoxConstant.PARAM_NAME_STATUS);
                 String status = statusElm.getText();
                 getAccountTreeResponse.setStatus(status);
                 if (BoxConstant.STATUS_LISTING_OK.equals(status)) {
-                    Element treeElm = responseElm
-                            .element(BoxConstant.PARAM_NAME_TREE);
+                    Element treeElm = responseElm.element(BoxConstant.PARAM_NAME_TREE);
 
-                    if (params != null
-                            && Arrays.asList(params).contains(PARAMS_KEY_NOZIP)) {
+                    if (params != null && Arrays.asList(params).contains(PARAMS_KEY_NOZIP)) {
                         DefaultMutableTreeNode treeModel = transferTree2Model(treeElm);
                         getAccountTreeResponse.setTree(treeModel);
                     } else {
-                        getAccountTreeResponse
-                                .setEncodedTree(treeElm.getText());
+                        getAccountTreeResponse.setEncodedTree(treeElm.getText());
                     }
                 }
             } catch (DocumentException e) {
-                BoxException be = new BoxException(
-                        "failed to parse to a document.", e);
+                BoxException be = new BoxException("failed to parse to a document.", e);
                 be.setStatus(getAccountTreeResponse.getStatus());
                 throw be;
             }
 
-        } else if (BoxConstant.CONFIG_API_REQUEST_FORMAT_SOAP
-                .equals(apiRequestFormat)) {
+        } else if (BoxConstant.CONFIG_API_REQUEST_FORMAT_SOAP.equals(apiRequestFormat)) {
 
         } else {
         }
@@ -223,15 +198,12 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
      * @param parentTreeNode
      *            parent tree node
      */
-    private void recursiveOnFolder(Element folderElm,
-            DefaultMutableTreeNode parentTreeNode) {
+    private void recursiveOnFolder(Element folderElm, DefaultMutableTreeNode parentTreeNode) {
         BoxAbstractFile fileItem = BoxObjectFactory.createBoxAbstractFile();
         fileItem.setFolder(true);
         fileItem.setId(folderElm.attribute("id").getText());
-        if (folderElm.attribute("created") != null
-                && !"".equals(folderElm.attribute("created").getText())) {
-            fileItem.setCreated(Long.parseLong(folderElm.attribute("created")
-                    .getText()));
+        if (folderElm.attribute("created") != null && !"".equals(folderElm.attribute("created").getText())) {
+            fileItem.setCreated(Long.parseLong(folderElm.attribute("created").getText()));
         }
         fileItem.setFolder(true);
         if (folderElm.attribute("keyword") != null) {
@@ -239,19 +211,20 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
         }
         fileItem.setName(folderElm.attribute("name").getText());
         if (folderElm.attribute("shared") != null) {
-            fileItem.setShared(Boolean.parseBoolean(folderElm.attribute(
-                    "shared").getText()));
+            fileItem.setShared(Boolean.parseBoolean(folderElm.attribute("shared").getText()));
         }
-        if (folderElm.attribute("updated") != null
-                & !"".equals(folderElm.attribute("updated").getText())) {
-            fileItem.setUpdated(Long.parseLong(folderElm.attribute("updated")
-                    .getText()));
+        if (folderElm.attribute("updated") != null && !"".equals(folderElm.attribute("updated").getText())) {
+            fileItem.setUpdated(Long.parseLong(folderElm.attribute("updated").getText()));
         }
         parentTreeNode.setUserObject(fileItem);
 
         Element tagsElm = folderElm.element("tags");
-        List tagsList = ConverterUtils.transferTags2List(tagsElm);
-        fileItem.setTags(tagsList);
+        if (tagsElm != null) {
+            List tagsList = ConverterUtils.transferTags2List(tagsElm);
+            fileItem.setTags(tagsList);
+        } else {
+            fileItem.setTags(new ArrayList());
+        }
         Element filesElm = folderElm.element("files");
         if (filesElm != null) {
             for (int i = 0; i < filesElm.nodeCount(); i++) {
@@ -279,13 +252,11 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
      * @param parentTreeNode
      *            parent tree node
      */
-    private void recursiveOnFile(Element fileNodeElm,
-            DefaultMutableTreeNode parentTreeNode) {
+    private void recursiveOnFile(Element fileNodeElm, DefaultMutableTreeNode parentTreeNode) {
         BoxAbstractFile fileItem = BoxObjectFactory.createBoxAbstractFile();
         fileItem.setId(fileNodeElm.attribute("id").getText());
         if (fileNodeElm.attribute("created") != null) {
-            fileItem.setCreated(Long.parseLong(fileNodeElm.attribute("created")
-                    .getText()));
+            fileItem.setCreated(Long.parseLong(fileNodeElm.attribute("created").getText()));
         }
         fileItem.setFolder(false);
         if (fileNodeElm.attribute("keyword") != null) {
@@ -293,19 +264,20 @@ public class GetAccountTreeMethod extends BaseBoxMethod {
         }
         fileItem.setName(fileNodeElm.attribute("file_name").getText());
         if (fileNodeElm.attribute("shared") != null) {
-            fileItem.setShared(Boolean.parseBoolean(fileNodeElm.attribute(
-                    "shared").getText()));
+            fileItem.setShared(Boolean.parseBoolean(fileNodeElm.attribute("shared").getText()));
         }
-        fileItem.setSize(Long
-                .parseLong(fileNodeElm.attribute("size").getText()));
+        fileItem.setSize(Long.parseLong(fileNodeElm.attribute("size").getText()));
 
         if (fileNodeElm.attribute("updated") != null) {
-            fileItem.setUpdated(Long.parseLong(fileNodeElm.attribute("updated")
-                    .getText()));
+            fileItem.setUpdated(Long.parseLong(fileNodeElm.attribute("updated").getText()));
         }
         Element tagsElm = fileNodeElm.element("tags");
-        List tagsList = ConverterUtils.transferTags2List(tagsElm);
-        fileItem.setTags(tagsList);
+        if (tagsElm != null) {
+            List tagsList = ConverterUtils.transferTags2List(tagsElm);
+            fileItem.setTags(tagsList);
+        } else {
+            fileItem.setTags(new ArrayList());
+        }
         parentTreeNode.setUserObject(fileItem);
 
     }

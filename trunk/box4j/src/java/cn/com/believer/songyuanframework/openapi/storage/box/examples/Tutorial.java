@@ -39,9 +39,6 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.UploadResul
  */
 public final class Tutorial {
 
-    /** enter your api key here. */
-    public static final String API_KEY = "e7ak8t2je0rxoq97k9sl2fh2mld1dn6x";
-
     /**
      * 
      */
@@ -56,33 +53,44 @@ public final class Tutorial {
         // the global API interface
         BoxExternalAPI iBoxExternalAPI = new SimpleBoxImpl();
 
+        // get user's API key
+        System.out.println(">>>>>>>>>>> Please enter your API key, it should be like 'e7ak8t2je0rxoq97k9sl2fh2mld1xxxx'");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String apiKey = null;
+        try {
+            apiKey = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         try {
             // create a user for the preparation.
             String email = "test" + System.currentTimeMillis() + "@test.com";
             String password = "888888";
-            RegisterNewUserRequest registerNewUserRequest = BoxRequestFactory.createRegisterNewUserRequest(
-                    Tutorial.API_KEY, email, password);
+            RegisterNewUserRequest registerNewUserRequest = BoxRequestFactory.createRegisterNewUserRequest(apiKey,
+                    email, password);
             iBoxExternalAPI.registerNewUser(registerNewUserRequest);
-            System.out.println("Your username is " + email);
-            System.out.println("Your password is 888888");
+            System.out.println(">>>>>>>>>>> A test user has been created for you");
+            System.out.println(">>>>>>>>>>> The username is " + email);
+            System.out.println(">>>>>>>>>>> The password is 888888");
 
             // get a ticket by API key.
-            GetTicketRequest getTicketRequest = BoxRequestFactory.createGetTicketRequest(API_KEY);
+            GetTicketRequest getTicketRequest = BoxRequestFactory.createGetTicketRequest(apiKey);
             GetTicketResponse getTicketResponse = iBoxExternalAPI.getTicket(getTicketRequest);
 
             // after you get the ticket, you need to navigate to the URL
             // http://www.box.net/api/1.0/auth/<ticket> to enter the user name and password to authenticate.
-            System.out.println("Your ticket is " + getTicketResponse.getTicket());
-
-            System.out.println("press any key after you are authenticated from box.net page.");
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println(">>>>>>>>>>> Your ticket is " + getTicketResponse.getTicket());
+            System.out.println(">>>>>>>>>>> please authenticate from this URL: http://www.box.net/api/1.0/auth/" + getTicketResponse.getTicket());
+            System.out.println(">>>>>>>>>>> press enter after you are authenticated from box.net page.");
+            br = new BufferedReader(new InputStreamReader(System.in));
             try {
                 String temp = br.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            GetAuthTokenRequest getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(API_KEY,
+            GetAuthTokenRequest getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(apiKey,
                     getTicketResponse.getTicket());
             GetAuthTokenResponse getAuthTokenResponse = iBoxExternalAPI.getAuthToken(getAuthTokenRequest);
 
@@ -92,8 +100,8 @@ public final class Tutorial {
             String authToken = getAuthTokenResponse.getAuthToken();
 
             // create a folder
-            CreateFolderRequest createFolderRequest = BoxRequestFactory.createCreateFolderRequest(Tutorial.API_KEY,
-                    authToken, "0", "folderName" + System.currentTimeMillis(), false);
+            CreateFolderRequest createFolderRequest = BoxRequestFactory.createCreateFolderRequest(apiKey, authToken,
+                    "0", "folderName" + System.currentTimeMillis(), false);
             CreateFolderResponse createFolderResponse = iBoxExternalAPI.createFolder(createFolderRequest);
             String createdFolderId = createFolderResponse.getFolder().getFolderId();
 
@@ -120,14 +128,14 @@ public final class Tutorial {
             iBoxExternalAPI.upload(uploadRequest);
 
             // share this folder
-            PublicShareRequest publicShareRequest = BoxRequestFactory.createPublicShareRequest(Tutorial.API_KEY,
-                    authToken, "folder", "888888", createdFolderId, "this is my public folder !", null);
+            PublicShareRequest publicShareRequest = BoxRequestFactory.createPublicShareRequest(apiKey, authToken,
+                    "folder", "888888", createdFolderId, "this is my public folder !", null);
             iBoxExternalAPI.publicShare(publicShareRequest);
 
             // get account file/folder tree structure
             String[] params = { "nozip" };
-            GetAccountTreeRequest getAccountTreeRequest = BoxRequestFactory.createGetAccountTreeRequest(
-                    Tutorial.API_KEY, authToken, "0", params);
+            GetAccountTreeRequest getAccountTreeRequest = BoxRequestFactory.createGetAccountTreeRequest(apiKey,
+                    authToken, "0", params);
             iBoxExternalAPI.getAccountTree(getAccountTreeRequest);
 
             // download the file
@@ -138,12 +146,12 @@ public final class Tutorial {
             iBoxExternalAPI.download(downloadRequest);
 
             // delete this file
-            DeleteRequest deleteRequest = BoxRequestFactory.createDeleteRequest(Tutorial.API_KEY, authToken, "file",
+            DeleteRequest deleteRequest = BoxRequestFactory.createDeleteRequest(apiKey, authToken, "file",
                     uploadedFileId);
             iBoxExternalAPI.delete(deleteRequest);
 
             // logout
-            LogoutRequest logoutRequest = BoxRequestFactory.createLogoutRequest(Tutorial.API_KEY, authToken);
+            LogoutRequest logoutRequest = BoxRequestFactory.createLogoutRequest(apiKey, authToken);
             iBoxExternalAPI.logout(logoutRequest);
         } catch (IOException e) {
             e.printStackTrace();

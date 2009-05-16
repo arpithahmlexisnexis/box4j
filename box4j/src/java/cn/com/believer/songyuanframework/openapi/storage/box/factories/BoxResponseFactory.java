@@ -11,6 +11,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFol
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DownloadResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.ExportTagsResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountInfoResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoResponse;
@@ -35,8 +36,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyReg
 public class BoxResponseFactory extends BaseBoxFactory {
 
     /** log4j object. */
-    protected static final Logger LOGGER = Logger
-            .getLogger(BoxResponseFactory.class);
+    protected static final Logger LOGGER = Logger.getLogger(BoxResponseFactory.class);
 
     /**
      * create response object.
@@ -256,6 +256,16 @@ public class BoxResponseFactory extends BaseBoxFactory {
     public static VerifyRegistrationEmailResponse createVerifyRegistrationEmailResponse() {
         Object obj = newInstanceOf("box4j.config.responsefactory.VerifyRegistrationEmailResponse");
         return (VerifyRegistrationEmailResponse) obj;
+    }
+
+    /**
+     * create response object.
+     * 
+     * @return response object
+     */
+    public static GetAccountInfoResponse createGetAccountInfoResponse() {
+        Object obj = newInstanceOf("box4j.config.responsefactory.GetAccountInfoResponse");
+        return (GetAccountInfoResponse) obj;
     }
 
 }

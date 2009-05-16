@@ -71,6 +71,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxExceptio
 import junit.framework.TestCase;
 
 /**
+ * TODO write test case for get_account_info
+ * 
  * @author jjia
  * 
  */

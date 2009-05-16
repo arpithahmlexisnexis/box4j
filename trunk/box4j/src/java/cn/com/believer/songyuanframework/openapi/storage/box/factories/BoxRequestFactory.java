@@ -14,6 +14,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFol
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DownloadRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.ExportTagsRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountInfoRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoRequest;
@@ -38,8 +39,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyReg
 public class BoxRequestFactory extends BaseBoxFactory {
 
     /** log4j object. */
-    protected static final Logger LOGGER = Logger
-            .getLogger(BoxRequestFactory.class);
+    protected static final Logger LOGGER = Logger.getLogger(BoxRequestFactory.class);
 
     /**
      * create request object.
@@ -68,9 +68,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            tag string array
      * @return request object
      */
-    public static AddToMyBoxRequest createAddToMyBoxRequest(String apiKey,
-            String authToken, String fileId, String publicName,
-            String folderId, String[] tags) {
+    public static AddToMyBoxRequest createAddToMyBoxRequest(String apiKey, String authToken, String fileId,
+            String publicName, String folderId, String[] tags) {
         AddToMyBoxRequest addToMyBoxRequest = createAddToMyBoxRequest();
         addToMyBoxRequest.setApiKey(apiKey);
         addToMyBoxRequest.setAuthToken(authToken);
@@ -107,8 +106,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            target id
      * @return request object
      */
-    public static AddToTagRequest createAddToTagRequest(String apiKey,
-            String authToken, String[] tags, String target, String targetId) {
+    public static AddToTagRequest createAddToTagRequest(String apiKey, String authToken, String[] tags, String target,
+            String targetId) {
         AddToTagRequest addToTagRequest = createAddToTagRequest();
         addToTagRequest.setApiKey(apiKey);
         addToTagRequest.setAuthToken(authToken);
@@ -144,9 +143,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      * 
      * @return request object
      */
-    public static CreateFolderRequest createCreateFolderRequest(String apiKey,
-            String authToken, String parentFolderId, String folderName,
-            boolean share) {
+    public static CreateFolderRequest createCreateFolderRequest(String apiKey, String authToken, String parentFolderId,
+            String folderName, boolean share) {
         CreateFolderRequest createFolderRequest = createCreateFolderRequest();
         createFolderRequest.setApiKey(apiKey);
         createFolderRequest.setAuthToken(authToken);
@@ -179,8 +177,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            target id
      * @return request object
      */
-    public static DeleteRequest createDeleteRequest(String apiKey,
-            String authToken, String target, String targetId) {
+    public static DeleteRequest createDeleteRequest(String apiKey, String authToken, String target, String targetId) {
         DeleteRequest deleteRequest = createDeleteRequest();
         deleteRequest.setApiKey(apiKey);
         deleteRequest.setAuthToken(authToken);
@@ -212,8 +209,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            input JAVA File object
      * @return request object
      */
-    public static DownloadRequest createDownloadRequest(String authToken,
-            String fileId, boolean asFile, File inFile) {
+    public static DownloadRequest createDownloadRequest(String authToken, String fileId, boolean asFile, File inFile) {
         DownloadRequest downloadRequest = createDownloadRequest();
         downloadRequest.setAuthToken(authToken);
         downloadRequest.setFileId(fileId);
@@ -242,8 +238,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      * 
      * @return request object
      */
-    public static ExportTagsRequest createExportTagsRequest(String apiKey,
-            String authToken) {
+    public static ExportTagsRequest createExportTagsRequest(String apiKey, String authToken) {
         ExportTagsRequest exportTagsRequest = createExportTagsRequest();
         exportTagsRequest.setApiKey(apiKey);
         exportTagsRequest.setAuthToken(authToken);
@@ -274,8 +269,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      * 
      * @return request object
      */
-    public static GetAccountTreeRequest createGetAccountTreeRequest(
-            String apiKey, String authToken, String folderId, String[] params) {
+    public static GetAccountTreeRequest createGetAccountTreeRequest(String apiKey, String authToken, String folderId,
+            String[] params) {
         GetAccountTreeRequest getAccountTreeRequest = createGetAccountTreeRequest();
         getAccountTreeRequest.setApiKey(apiKey);
         getAccountTreeRequest.setAuthToken(authToken);
@@ -304,8 +299,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      * 
      * @return request object
      */
-    public static GetAuthTokenRequest createGetAuthTokenRequest(String apiKey,
-            String ticket) {
+    public static GetAuthTokenRequest createGetAuthTokenRequest(String apiKey, String ticket) {
         GetAuthTokenRequest getAuthTokenRequest = createGetAuthTokenRequest();
         getAuthTokenRequest.setApiKey(apiKey);
         getAuthTokenRequest.setTicket(ticket);
@@ -334,8 +328,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      * 
      * @return request object
      */
-    public static GetFileInfoRequest createGetFileInfoRequest(String apiKey,
-            String authToken, String fileId) {
+    public static GetFileInfoRequest createGetFileInfoRequest(String apiKey, String authToken, String fileId) {
         GetFileInfoRequest getFileInfoRequest = createGetFileInfoRequest();
         getFileInfoRequest.setApiKey(apiKey);
         getFileInfoRequest.setAuthToken(authToken);
@@ -365,8 +358,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      * 
      * @return request object
      */
-    public static GetFriendsRequest createGetFriendsRequest(String apiKey,
-            String authToken, String[] params) {
+    public static GetFriendsRequest createGetFriendsRequest(String apiKey, String authToken, String[] params) {
         GetFriendsRequest getFriendsRequest = createGetFriendsRequest();
         getFriendsRequest.setApiKey(apiKey);
         getFriendsRequest.setAuthToken(authToken);
@@ -418,8 +410,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      * 
      * @return request object
      */
-    public static LogoutRequest createLogoutRequest(String apiKey,
-            String authToken) {
+    public static LogoutRequest createLogoutRequest(String apiKey, String authToken) {
         LogoutRequest logoutRequest = createLogoutRequest();
         logoutRequest.setApiKey(apiKey);
         logoutRequest.setAuthToken(authToken);
@@ -452,8 +443,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      * 
      * @return request object
      */
-    public static MoveRequest createMoveRequest(String apiKey,
-            String authToken, String target, String targetId,
+    public static MoveRequest createMoveRequest(String apiKey, String authToken, String target, String targetId,
             String destinationId) {
         MoveRequest moveRequest = createMoveRequest();
         moveRequest.setApiKey(apiKey);
@@ -493,9 +483,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            notify flag
      * @return request object
      */
-    public static PrivateShareRequest createPrivateShareRequest(String apiKey,
-            String authToken, String target, String targetId, String[] emails,
-            String message, boolean nofity) {
+    public static PrivateShareRequest createPrivateShareRequest(String apiKey, String authToken, String target,
+            String targetId, String[] emails, String message, boolean nofity) {
         PrivateShareRequest privateShareRequest = createPrivateShareRequest();
         privateShareRequest.setApiKey(apiKey);
         privateShareRequest.setAuthToken(authToken);
@@ -536,9 +525,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            email array
      * @return request object
      */
-    public static PublicShareRequest createPublicShareRequest(String apiKey,
-            String authToken, String target, String targetId, String password,
-            String message, String[] emails) {
+    public static PublicShareRequest createPublicShareRequest(String apiKey, String authToken, String target,
+            String targetId, String password, String message, String[] emails) {
         PublicShareRequest publicShareRequest = createPublicShareRequest();
         publicShareRequest.setApiKey(apiKey);
         publicShareRequest.setAuthToken(authToken);
@@ -573,8 +561,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            target id
      * @return request object
      */
-    public static PublicUnshareRequest createPublicUnshareRequest(
-            String apiKey, String authToken, String target, String targetId) {
+    public static PublicUnshareRequest createPublicUnshareRequest(String apiKey, String authToken, String target,
+            String targetId) {
         PublicUnshareRequest publicUnshareRequest = createPublicUnshareRequest();
         publicUnshareRequest.setApiKey(apiKey);
         publicUnshareRequest.setAuthToken(authToken);
@@ -604,8 +592,7 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            password
      * @return request object
      */
-    public static RegisterNewUserRequest createRegisterNewUserRequest(
-            String apiKey, String loginName, String password) {
+    public static RegisterNewUserRequest createRegisterNewUserRequest(String apiKey, String loginName, String password) {
         RegisterNewUserRequest registerNewUserRequest = createRegisterNewUserRequest();
         registerNewUserRequest.setApiKey(apiKey);
         registerNewUserRequest.setLoginName(loginName);
@@ -638,8 +625,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            new name of item
      * @return request object
      */
-    public static RenameRequest createRenameRequest(String apiKey,
-            String authToken, String target, String targetId, String newName) {
+    public static RenameRequest createRenameRequest(String apiKey, String authToken, String target, String targetId,
+            String newName) {
         RenameRequest renameRequest = createRenameRequest();
         renameRequest.setApiKey(apiKey);
         renameRequest.setAuthToken(authToken);
@@ -674,9 +661,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            parameters
      * @return request object
      */
-    public static RequestFriendsRequest createRequestFriendsRequest(
-            String apiKey, String authToken, String[] emails, String message,
-            String[] params) {
+    public static RequestFriendsRequest createRequestFriendsRequest(String apiKey, String authToken, String[] emails,
+            String message, String[] params) {
         RequestFriendsRequest requestFriendsRequest = createRequestFriendsRequest();
         requestFriendsRequest.setApiKey(apiKey);
         requestFriendsRequest.setAuthToken(authToken);
@@ -711,9 +697,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            description
      * @return request object
      */
-    public static SetDescriptionRequest createSetDescriptionRequest(
-            String apiKey, String authToken, String target, String targetId,
-            String description) {
+    public static SetDescriptionRequest createSetDescriptionRequest(String apiKey, String authToken, String target,
+            String targetId, String description) {
         SetDescriptionRequest setDescriptionRequest = createSetDescriptionRequest();
         setDescriptionRequest.setApiKey(apiKey);
         setDescriptionRequest.setAuthToken(authToken);
@@ -746,8 +731,8 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            key is file name, value could be file or byte array.
      * @return request object
      */
-    public static UploadRequest createUploadRequest(String authToken,
-            boolean asFile, String parentFolderId, Map nameValueMap) {
+    public static UploadRequest createUploadRequest(String authToken, boolean asFile, String parentFolderId,
+            Map nameValueMap) {
         UploadRequest uploadRequest = createUploadRequest();
         uploadRequest.setAuthToken(authToken);
         uploadRequest.setAsFile(asFile);
@@ -775,12 +760,37 @@ public class BoxRequestFactory extends BaseBoxFactory {
      *            login name
      * @return request object
      */
-    public static VerifyRegistrationEmailRequest createVerifyRegistrationEmailRequest(
-            String apiKey, String loginName) {
+    public static VerifyRegistrationEmailRequest createVerifyRegistrationEmailRequest(String apiKey, String loginName) {
         VerifyRegistrationEmailRequest verifyRegistrationEmailRequest = createVerifyRegistrationEmailRequest();
         verifyRegistrationEmailRequest.setApiKey(apiKey);
         verifyRegistrationEmailRequest.setLoginName(loginName);
         return verifyRegistrationEmailRequest;
+    }
+
+    /**
+     * create request object.
+     * 
+     * @return request object
+     */
+    public static GetAccountInfoRequest createGetAccountInfoRequest() {
+        Object obj = newInstanceOf("box4j.config.requestfactory.GetAccountInfoRequest");
+        return (GetAccountInfoRequest) obj;
+    }
+
+    /**
+     * create request object.
+     * 
+     * @param apiKey
+     *            API key
+     * @param authToken
+     *            authentication token
+     * @return request object
+     */
+    public static GetAccountInfoRequest createGetAccountInfoRequest(String apiKey, String authToken) {
+        GetAccountInfoRequest getAccountInfoRequest = createGetAccountInfoRequest();
+        getAccountInfoRequest.setApiKey(apiKey);
+        getAccountInfoRequest.setAuthToken(authToken);
+        return getAccountInfoRequest;
     }
 
 }

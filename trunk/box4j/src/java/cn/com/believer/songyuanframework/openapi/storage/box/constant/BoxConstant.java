@@ -139,6 +139,9 @@ public class BoxConstant {
     /** action name. */
     public static final String ACTION_NAME_UPLOAD = "upload";
 
+    /** action name. */
+    public static final String ACTION_NAME_GET_ACCOUNT_INFO = "get_account_info";
+
     // param names
     /** parameter name. */
     public static final String PARAM_NAME_API_KEY = "api_key";
@@ -411,9 +414,12 @@ public class BoxConstant {
 
     /** status code. */
     public static final String STATUS_S_REQUEST_FRIENDS = "s_request_friends";
-
+    
     /** status code. */
     public static final String STATUS_UPLOAD_OK = "upload_ok";
+    
+    /** status code. */
+    public static final String STATUS_GET_ACCOUNT_INFO_OK = "get_account_info_ok";
 
     // request factory interface key
     /** request factory key. */

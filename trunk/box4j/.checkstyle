@@ -8,6 +8,5 @@
     </fileset>
     <filter name="FilesFromPackage" enabled="true">
         <filter-data value="src/java/cn/com/believer/songyuanframework/openapi/storage/box/test"/>
-        <filter-data value="src/java/cn/com/believer/songyuanframework/openapi/storage/xdrive/test"/>
     </filter>
 </fileset-config>

@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import cn.com.believer.songyuanframework.openapi.storage.box.BoxExternalAPI;
 import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstant;
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxRequestFactory;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountInfoRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountInfoResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenRequest;
@@ -75,8 +77,15 @@ public class ListFilesExample {
             GetAccountTreeRequest getAccountTreeRequest = BoxRequestFactory.createGetAccountTreeRequest(apiKey,
                     authToken, "0", params);
             GetAccountTreeResponse getAccountTreeResponse = iBoxExternalAPI.getAccountTree(getAccountTreeRequest);
-            
-            System.out.println("s");
+
+            System.out.println(getAccountTreeResponse.getStatus());
+
+            // test get_account_info
+            GetAccountInfoRequest getAccountInfoRequest = BoxRequestFactory.createGetAccountInfoRequest(apiKey,
+                    authToken);
+            GetAccountInfoResponse getAccountInfoResponse = iBoxExternalAPI.getAccountInfo(getAccountInfoRequest);
+
+            System.out.println(getAccountInfoResponse.getStatus());
 
         } catch (IOException e) {
             e.printStackTrace();

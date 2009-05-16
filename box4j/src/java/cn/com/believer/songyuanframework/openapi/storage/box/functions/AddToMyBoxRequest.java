@@ -7,29 +7,7 @@ package cn.com.believer.songyuanframework.openapi.storage.box.functions;
  * @author jjia
  * 
  */
-public interface AddToMyBoxRequest {
-
-    /**
-     * @return the apiKey
-     */
-    String getApiKey();
-
-    /**
-     * @param apiKey
-     *            the apiKey to set
-     */
-    void setApiKey(String apiKey);
-
-    /**
-     * @return the authToken
-     */
-    String getAuthToken();
-
-    /**
-     * @param authToken
-     *            the authToken to set
-     */
-    void setAuthToken(String authToken);
+public interface AddToMyBoxRequest extends BoxAuthRequest {
 
     /**
      * @return the fileId

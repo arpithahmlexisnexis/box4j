@@ -7,18 +7,7 @@ package cn.com.believer.songyuanframework.openapi.storage.box.functions;
  * @author Jimmy
  * 
  */
-public interface AddToTagRequest extends BoxRequest {
-
-    /**
-     * @return the authToken
-     */
-    String getAuthToken();
-
-    /**
-     * @param authToken
-     *            the authToken to set
-     */
-    void setAuthToken(String authToken);
+public interface AddToTagRequest extends BoxAuthRequest {
 
     /**
      * @return the tags

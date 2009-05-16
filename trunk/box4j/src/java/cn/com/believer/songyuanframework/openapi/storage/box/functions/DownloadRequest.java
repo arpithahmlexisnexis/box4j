@@ -9,18 +9,7 @@ import java.io.File;
  * @author Jimmy
  * 
  */
-public interface DownloadRequest extends BoxRequest {
-
-    /**
-     * @return the authToken
-     */
-    public String getAuthToken();
-
-    /**
-     * @param authToken
-     *            the authToken to set
-     */
-    public void setAuthToken(String authToken);
+public interface DownloadRequest extends BoxAuthRequest {
 
     /**
      * @return the fileId

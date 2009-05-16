@@ -9,18 +9,7 @@ import java.util.Map;
  * @author Jimmy
  * 
  */
-public interface UploadRequest extends BoxRequest {
-
-    /**
-     * @return the authToken
-     */
-    public String getAuthToken();
-
-    /**
-     * @param authToken
-     *            the authToken to set
-     */
-    public void setAuthToken(String authToken);
+public interface UploadRequest extends BoxAuthRequest {
 
     /**
      * @return the folderId

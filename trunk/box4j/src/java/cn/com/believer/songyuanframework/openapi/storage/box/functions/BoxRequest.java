@@ -4,6 +4,8 @@
 package cn.com.believer.songyuanframework.openapi.storage.box.functions;
 
 /**
+ * every box request should contain api key.
+ * 
  * @author Jimmy
  * 
  */

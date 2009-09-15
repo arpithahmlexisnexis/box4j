@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToTagRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.CopyRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DownloadRequest;
@@ -430,6 +431,16 @@ public class BoxRequestFactory extends BaseBoxFactory {
     /**
      * create request object.
      * 
+     * @return request object
+     */
+    public static CopyRequest createCopyRequest() {
+        Object obj = newInstanceOf("box4j.config.requestfactory.CopyRequest");
+        return (CopyRequest) obj;
+    }
+
+    /**
+     * create request object.
+     * 
      * @param apiKey
      *            API key
      * @param authToken
@@ -452,6 +463,33 @@ public class BoxRequestFactory extends BaseBoxFactory {
         moveRequest.setTargetId(targetId);
         moveRequest.setDestinationId(destinationId);
         return moveRequest;
+    }
+
+    /**
+     * create request object.
+     * 
+     * @param apiKey
+     *            API key
+     * @param authToken
+     *            auth token
+     * @param target
+     *            target
+     * @param targetId
+     *            target id
+     * @param destinationId
+     *            destination id
+     * 
+     * @return request object
+     */
+    public static CopyRequest createCopyRequest(String apiKey, String authToken, String target, String targetId,
+            String destinationId) {
+        CopyRequest copyRequest = createCopyRequest();
+        copyRequest.setApiKey(apiKey);
+        copyRequest.setAuthToken(authToken);
+        copyRequest.setTarget(target);
+        copyRequest.setTargetId(targetId);
+        copyRequest.setDestinationId(destinationId);
+        return copyRequest;
     }
 
     /**

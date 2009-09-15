@@ -1,9 +1,10 @@
 package cn.com.believer.songyuanframework.openapi.storage.box.functions;
 
 /**
+ * authorized request should contain auth token.
  * 
  * @author Jimmy Jia
- *
+ * 
  */
 public interface BoxAuthRequest extends BoxRequest {
 

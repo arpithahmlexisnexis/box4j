@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToTagResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.CopyResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DownloadResponse;
@@ -166,6 +167,16 @@ public class BoxResponseFactory extends BaseBoxFactory {
     public static MoveResponse createMoveResponse() {
         Object obj = newInstanceOf("box4j.config.responsefactory.MoveResponse");
         return (MoveResponse) obj;
+    }
+
+    /**
+     * create response object.
+     * 
+     * @return response object
+     */
+    public static CopyResponse createCopyResponse() {
+        Object obj = newInstanceOf("box4j.config.responsefactory.CopyResponse");
+        return (CopyResponse) obj;
     }
 
     /**

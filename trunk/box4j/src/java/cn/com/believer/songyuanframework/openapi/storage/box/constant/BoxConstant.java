@@ -101,6 +101,9 @@ public class BoxConstant {
     public static final String ACTION_NAME_MOVE = "move";
 
     /** action name. */
+    public static final String ACTION_NAME_COPY = "copy";
+
+    /** action name. */
     public static final String ACTION_NAME_RENAME = "rename";
 
     /** action name. */

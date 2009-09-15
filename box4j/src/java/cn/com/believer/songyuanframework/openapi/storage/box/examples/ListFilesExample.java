@@ -58,7 +58,7 @@ public class ListFilesExample {
             System.out.println(">>>>>>>>>>> press enter after you are authenticated from box.net page.");
             br = new BufferedReader(new InputStreamReader(System.in));
             try {
-                String temp = br.readLine();
+                br.readLine();
             } catch (IOException e) {
                 e.printStackTrace();
             }

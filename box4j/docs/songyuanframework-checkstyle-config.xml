@@ -82,7 +82,7 @@
         <module name="UnnecessaryParentheses"/>
         <module name="LineLength">
             <property name="severity" value="info"/>
-            <property name="max" value="120"/>
+            <property name="max" value="255"/>
             <property name="tabWidth" value="4"/>
         </module>
     </module>

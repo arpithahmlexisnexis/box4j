@@ -97,6 +97,14 @@
     <target name="compile" depends="prepare-src">
         <javac srcdir="${build.src}" destdir="${build.dest}" debug="${debug}" optimize="${optimize}" target="1.3" source="1.3" deprecation="${deprecation}" classpathref="compile.classpath">
         </javac>
+        <copy todir="${build.dest}">
+            <fileset dir="${build.src}">
+                <include name="**/*.dtd" />
+                <include name="**/*.xml" />
+                <include name="**/*.xslt" />
+                <include name="**/box4j-config-default.properties" />
+            </fileset>
+        </copy>
     </target>
 
     <!-- =================================================================== -->

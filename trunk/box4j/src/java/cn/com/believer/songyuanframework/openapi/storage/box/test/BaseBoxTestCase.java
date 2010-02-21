@@ -251,17 +251,17 @@ public class BaseBoxTestCase extends TestCase {
 
             /** get_auth_token. */
             GetAuthTokenRequest getAuthTokenRequest;
-            
+
             // wrong API key
             getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(incorrectApiKey, correctTicket);
             getAuthTokenResponse = boxExternalAPI.getAuthToken(getAuthTokenRequest);
             assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, getAuthTokenResponse.getStatus());
-            
+
             // wrong ticket
             getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(apiKey, incorrectTicket);
             getAuthTokenResponse = boxExternalAPI.getAuthToken(getAuthTokenRequest);
             assertEquals(BoxConstant.STATUS_GET_AUTH_TOKEN_ERROR, getAuthTokenResponse.getStatus());
-            
+
             // get auth token ok
             getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(apiKey, correctTicket);
             getAuthTokenResponse = boxExternalAPI.getAuthToken(getAuthTokenRequest);
@@ -271,24 +271,24 @@ public class BaseBoxTestCase extends TestCase {
             /** get_account_info. */
             GetAccountInfoRequest getAccountInfoRequest;
             GetAccountInfoResponse getAccountInfoResponse;
-            
+
             // wrong API key
             getAccountInfoRequest = BoxRequestFactory.createGetAccountInfoRequest(incorrectApiKey, authToken);
             getAccountInfoResponse = boxExternalAPI.getAccountInfo(getAccountInfoRequest);
             assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, getAccountInfoResponse.getStatus());
-            
+
             // wrong auth token
             getAccountInfoRequest = BoxRequestFactory.createGetAccountInfoRequest(apiKey, incorrectAuthToken);
             getAccountInfoResponse = boxExternalAPI.getAccountInfo(getAccountInfoRequest);
             assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getAccountInfoResponse.getStatus());
-            
+
             // get account info ok
             getAccountInfoRequest = BoxRequestFactory.createGetAccountInfoRequest(apiKey, authToken);
             getAccountInfoResponse = boxExternalAPI.getAccountInfo(getAccountInfoRequest);
-            assertEquals(BoxConstant.STATUS_GET_ACCOUNT_INFO_OK, getAccountInfoResponse.getStatus()); 
+            assertEquals(BoxConstant.STATUS_GET_ACCOUNT_INFO_OK, getAccountInfoResponse.getStatus());
             BoxUser boxUser = getAccountInfoResponse.getUser();
             assertEquals(correctEmail, boxUser.getLogin());
-            
+
             /** add to my box. */
             AddToMyBoxRequest addToMyBoxRequest;
             AddToMyBoxResponse addToMyBoxResponse;
@@ -318,10 +318,14 @@ public class BaseBoxTestCase extends TestCase {
             assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_ERROR, addToMyBoxResponse.getStatus());
 
             // wrong folder id
-//            addToMyBoxRequest = BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken, "f_135700509",
-//                    "3qk29e88pf", incorrectId, normalTags);
-//            addToMyBoxResponse = boxExternalAPI.addToMyBox(addToMyBoxRequest);
-//            assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_ERROR, addToMyBoxResponse.getStatus());
+            // addToMyBoxRequest =
+            // BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken,
+            // "f_135700509",
+            // "3qk29e88pf", incorrectId, normalTags);
+            // addToMyBoxResponse =
+            // boxExternalAPI.addToMyBox(addToMyBoxRequest);
+            // assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_ERROR,
+            // addToMyBoxResponse.getStatus());
 
             // special character tags
             addToMyBoxRequest = BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken, "f_135700509",
@@ -330,16 +334,18 @@ public class BaseBoxTestCase extends TestCase {
             assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_ERROR, addToMyBoxResponse.getStatus());
 
             // success add to my box
-            addToMyBoxRequest = BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken, "212293376",
-                    "0zxx7odf1n", "0", normalTags);
+            addToMyBoxRequest = BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken, "212293376", "0zxx7odf1n",
+                    "0", normalTags);
             addToMyBoxResponse = boxExternalAPI.addToMyBox(addToMyBoxRequest);
             // TODO bugs? not working at all
-//            assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_OK, addToMyBoxResponse.getStatus());
+            // assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_OK,
+            // addToMyBoxResponse.getStatus());
 
             /** request_friends */
             RequestFriendsResponse requestFriendsResponse;
             RequestFriendsRequest requestFriendsRequest;
             String[] emails = { correctEmail, usedEmail, incorrectEmail };
+            String[] correctEmails = { correctEmail, usedEmail };
             String[] params = { "box_auto_subscribe", "no_email" };
 
             // wrong API key
@@ -354,10 +360,16 @@ public class BaseBoxTestCase extends TestCase {
             requestFriendsResponse = boxExternalAPI.requestFriends(requestFriendsRequest);
             assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, requestFriendsResponse.getStatus());
 
-            // wrong email format is ignored by box.net
+            // wrong email format
             requestFriendsRequest = BoxRequestFactory.createRequestFriendsRequest(apiKey, authToken, emails,
                     "welcome!", params);
             requestFriendsResponse = boxExternalAPI.requestFriends(requestFriendsRequest);
+            assertEquals(BoxConstant.STATUS_E_REQUEST_FRIENDS, requestFriendsResponse.getStatus());
+
+            // successful request
+            requestFriendsResponse = boxExternalAPI.requestFriends(BoxRequestFactory.createRequestFriendsRequest(
+                    apiKey, authToken, new String[] { "paranoid945@hotmail.com", correctEmail }, "welcome",
+                    new String[] { "box_auto_subscribe" }));
             assertEquals(BoxConstant.STATUS_S_REQUEST_FRIENDS, requestFriendsResponse.getStatus());
 
             /** get_friends */
@@ -413,7 +425,7 @@ public class BaseBoxTestCase extends TestCase {
             createFolderRequest = BoxRequestFactory.createCreateFolderRequest(apiKey, authToken, incorrectId,
                     firstFolderName, true);
             createFolderResponse = boxExternalAPI.createFolder(createFolderRequest);
-            assertEquals(BoxConstant.STATUS_E_NO_PARENT_FOLDER, createFolderResponse.getStatus());
+            assertEquals(BoxConstant.STATUS_NO_PARENT, createFolderResponse.getStatus());
 
             // special character folder name
             // createFolderRequest =
@@ -721,7 +733,7 @@ public class BaseBoxTestCase extends TestCase {
 
             // correct private share
             privateShareRequest = BoxRequestFactory.createPrivateShareRequest(apiKey, authToken, "file", rootFile1Id,
-                    emails, "PrivateShareMessage", true);
+                    correctEmails, "PrivateShareMessage", true);
             privateShareResponse = boxExternalAPI.privateShare(privateShareRequest);
             assertEquals(BoxConstant.STATUS_PRIVATE_SHARE_OK, privateShareResponse.getStatus());
 

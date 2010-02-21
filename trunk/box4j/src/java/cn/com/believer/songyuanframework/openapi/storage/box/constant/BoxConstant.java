@@ -356,7 +356,7 @@ public class BoxConstant {
     public static final String STATUS_E_REGISTER = "e_register";
 
     /** status code. */
-    public static final String STATUS_E_NO_PARENT_FOLDER = "e_no_parent_folder";
+    public static final String STATUS_NO_PARENT = "no_parent";
 
     /** status code. */
     public static final String STATUS_E_FOLDER_ID = "e_folder_id";
@@ -432,6 +432,9 @@ public class BoxConstant {
 
     /** status code. */
     public static final String STATUS_S_REQUEST_FRIENDS = "s_request_friends";
+
+    /** status code. */
+    public static final String STATUS_E_REQUEST_FRIENDS = "e_request_friends";
     
     /** status code. */
     public static final String STATUS_UPLOAD_OK = "upload_ok";

@@ -8,6 +8,8 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import cn.com.believer.songyuanframework.openapi.storage.box.BoxExternalAPI;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToTagRequest;
@@ -16,6 +18,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.CopyReque
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CopyResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteCommentRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteCommentResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DownloadRequest;
@@ -28,12 +32,16 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccoun
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetCommentsRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetCommentsResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFriendsRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFriendsResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveRequest;
@@ -50,25 +58,31 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.RenameReq
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RenameResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RequestFriendsRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RequestFriendsResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.SetDescriptionRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.SetDescriptionResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.UploadRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.UploadResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.AddCommentMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.AddToMyBoxMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.AddToTagMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.CopyMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.CreateFolderMethod;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.DeleteCommentMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.DeleteMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.DownloadMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.ExportTagsMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetAccountInfoMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetAccountTreeMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetAuthTokenMethod;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetCommentsMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetFileInfoMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetFriendsMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetTicketMethod;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetUpdatesMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.LogoutMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.MoveMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.PrivateShareMethod;
@@ -77,6 +91,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.RegisterNewUserMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.RenameMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.RequestFriendsMethod;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.SearchMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.SetDescriptionMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.UploadMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.VerifyRegistrationEmailMethod;
@@ -162,6 +177,21 @@ public class SimpleBoxImpl implements BoxExternalAPI {
 
     /** box action implementation. */
     private GetAccountInfoMethod getAccountInfoMethod = new GetAccountInfoMethod();
+
+    /** box action implementation. */
+    private GetCommentsMethod getCommentsMethod = new GetCommentsMethod();
+
+    /** box action implementation. */
+    private AddCommentMethod addCommentMethod = new AddCommentMethod();
+
+    /** box action implementation. */
+    private DeleteCommentMethod deleteCommentMethod = new DeleteCommentMethod();
+
+    /** box action implementation. */
+    private SearchMethod searchMethod = new SearchMethod();
+
+    /** box action implementation. */
+    private GetUpdatesMethod getUpdatesMethod = new GetUpdatesMethod();
 
     /**
      * @param uploadRequest
@@ -652,6 +682,83 @@ public class SimpleBoxImpl implements BoxExternalAPI {
     public GetAccountInfoResponse getAccountInfo(GetAccountInfoRequest getAccountInfoRequest) throws IOException,
             BoxException {
         return this.getAccountInfoMethod.getAccountInfo(getAccountInfoRequest);
+    }
+
+    /**
+     * This method is used to retrieve the comments on an item.
+     * 
+     * @param getCommentsRequest
+     *            request object
+     * @return response object
+     * @throws IOException
+     *             IO exception
+     * @throws BoxException
+     *             box exception
+     */
+    public GetCommentsResponse getComments(GetCommentsRequest getCommentsRequest) throws IOException, BoxException {
+        return this.getCommentsMethod.getComments(getCommentsRequest);
+    }
+
+    /**
+     * This method is used to add a comment to an item.
+     * 
+     * @param addCommentRequest
+     *            request object
+     * @return response object
+     * @throws IOException
+     *             IO exception
+     * @throws BoxException
+     *             box exception
+     */
+    public AddCommentResponse addComment(AddCommentRequest addCommentRequest) throws IOException, BoxException {
+        return this.addCommentMethod.addComment(addCommentRequest);
+    }
+
+    /**
+     * This method is used to delete a comment.
+     * 
+     * @param deleteCommentRequest
+     *            request object
+     * @return response object
+     * @throws IOException
+     *             IO exception
+     * @throws BoxException
+     *             box exception
+     */
+    public DeleteCommentResponse deleteComment(DeleteCommentRequest deleteCommentRequest) throws IOException,
+            BoxException {
+        return this.deleteCommentMethod.deleteComment(deleteCommentRequest);
+    }
+
+    /**
+     * This method returns the content of a user's Updates tab.
+     * 
+     * @param getUpdatesRequest
+     *            request object
+     * @return response object
+     * @throws IOException
+     *             IO exception
+     * @throws BoxException
+     *             box exception
+     */
+    public GetUpdatesResponse getUpdates(GetUpdatesRequest getUpdatesRequest) throws IOException, BoxException {
+        return this.getUpdatesMethod.getUpdates(getUpdatesRequest);
+    }
+
+    /**
+     * This method makes a file or folder shareable, and may initiate sharing
+     * through Box.net email notifications.
+     * 
+     * @param searchRequest
+     *            request object
+     * @return response object
+     * @throws IOException
+     *             IO exception
+     * @throws BoxException
+     *             box exception
+     */
+    public SearchResponse search(SearchRequest searchRequest) throws IOException, BoxException {
+        return this.searchMethod.search(searchRequest);
     }
 
 }

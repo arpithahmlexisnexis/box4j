@@ -5,19 +5,23 @@ package cn.com.believer.songyuanframework.openapi.storage.box.factories;
 
 import org.apache.log4j.Logger;
 
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToTagResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CopyResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteCommentResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DownloadResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.ExportTagsResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountInfoResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetCommentsResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFriendsResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PrivateShareResponse;
@@ -26,6 +30,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicUns
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RegisterNewUserResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RenameResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RequestFriendsResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.SetDescriptionResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.UploadResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailResponse;
@@ -37,7 +42,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyReg
 public class BoxResponseFactory extends BaseBoxFactory {
 
     /** log4j object. */
-    protected static final Logger LOGGER = Logger.getLogger(BoxResponseFactory.class);
+    protected static final Logger LOGGER = Logger
+                                                 .getLogger(BoxResponseFactory.class);
 
     /**
      * create response object.
@@ -277,6 +283,56 @@ public class BoxResponseFactory extends BaseBoxFactory {
     public static GetAccountInfoResponse createGetAccountInfoResponse() {
         Object obj = newInstanceOf("box4j.config.responsefactory.GetAccountInfoResponse");
         return (GetAccountInfoResponse) obj;
+    }
+
+    /**
+     * create response object.
+     * 
+     * @return response object
+     */
+    public static GetCommentsResponse createGetCommentsResponse() {
+        Object obj = newInstanceOf("box4j.config.responsefactory.GetCommentsResponse");
+        return (GetCommentsResponse) obj;
+    }
+
+    /**
+     * create response object.
+     * 
+     * @return response object
+     */
+    public static AddCommentResponse createAddCommentResponse() {
+        Object obj = newInstanceOf("box4j.config.responsefactory.AddCommentResponse");
+        return (AddCommentResponse) obj;
+    }
+
+    /**
+     * create response object.
+     * 
+     * @return response object
+     */
+    public static DeleteCommentResponse createDeleteCommentResponse() {
+        Object obj = newInstanceOf("box4j.config.responsefactory.DeleteCommentResponse");
+        return (DeleteCommentResponse) obj;
+    }
+
+    /**
+     * create response object.
+     * 
+     * @return response object
+     */
+    public static SearchResponse createSearchResponse() {
+        Object obj = newInstanceOf("box4j.config.responsefactory.SearchResponse");
+        return (SearchResponse) obj;
+    }
+
+    /**
+     * create response object.
+     * 
+     * @return response object
+     */
+    public static GetUpdatesResponse createGetUpdatesResponse() {
+        Object obj = newInstanceOf("box4j.config.responsefactory.GetUpdatesResponse");
+        return (GetUpdatesResponse) obj;
     }
 
 }

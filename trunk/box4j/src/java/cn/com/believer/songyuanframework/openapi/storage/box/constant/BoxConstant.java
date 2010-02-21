@@ -145,6 +145,21 @@ public class BoxConstant {
     /** action name. */
     public static final String ACTION_NAME_GET_ACCOUNT_INFO = "get_account_info";
 
+    /** action name. */
+    public static final String ACTION_NAME_GET_COMMENTS = "get_comments";
+
+    /** action name. */
+    public static final String ACTION_NAME_ADD_COMMENT = "add_comment";
+
+    /** action name. */
+    public static final String ACTION_NAME_DELETE_COMMENT = "delete_comment";
+
+    /** action name. */
+    public static final String ACTION_NAME_SEARCH = "search";
+
+    /** action name. */
+    public static final String ACTION_NAME_GET_UPDATES = "get_updates";
+
     // param names
     /** parameter name. */
     public static final String PARAM_NAME_API_KEY = "api_key";

@@ -46,13 +46,10 @@ public class BaseBoxMethod {
      * 
      */
     public BaseBoxMethod() {
-        this.apiUrlPrefix = config
-                .getProperty(BoxConstant.CONFIG_API_URL_PREFIX);
-        this.apiUploadUrlPrefix = config
-                .getProperty(BoxConstant.CONFIG_API_UPLOAD_URL_PREFIX);
+        this.apiUrlPrefix = config.getProperty(BoxConstant.CONFIG_API_URL_PREFIX);
+        this.apiUploadUrlPrefix = config.getProperty(BoxConstant.CONFIG_API_UPLOAD_URL_PREFIX);
         this.apiVersion = config.getProperty(BoxConstant.CONFIG_API_VERSION);
-        this.apiRequestFormat = config
-                .getProperty(BoxConstant.CONFIG_API_REQUEST_FORMAT);
+        this.apiRequestFormat = config.getProperty(BoxConstant.CONFIG_API_REQUEST_FORMAT);
 
         this.xmlApiUrl = getXMLUrl();
         this.soapApiUrl = getSOAPUrl();
@@ -107,7 +104,7 @@ public class BaseBoxMethod {
         urlBuf.append(BoxConstant.SLASH_STRING);
         urlBuf.append(BoxConstant.CONFIG_API_REQUEST_FORMAT_SOAP);
         return urlBuf.toString();
-//        return "http://box.net/api/1.0/soap";
+        // return "http://box.net/api/1.0/soap";
     }
 
     /**
@@ -117,23 +114,16 @@ public class BaseBoxMethod {
      */
     protected Document getBaseSoapDocument() {
         Document doc = DocumentHelper.createDocument();
-        Element envelopeElm = DocumentHelper
-                .createElement(BoxConstant.PARAM_NAME_SOAP_ENVELOPE);
-        envelopeElm.addAttribute("xmlns:soap",
-                "http://schemas.xmlsoap.org/soap/envelope/");
-        envelopeElm.addAttribute("xmlns:soapenc",
-                "http://schemas.xmlsoap.org/soap/encoding/");
+        Element envelopeElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_SOAP_ENVELOPE);
+        envelopeElm.addAttribute("xmlns:soap", "http://schemas.xmlsoap.org/soap/envelope/");
+        envelopeElm.addAttribute("xmlns:soapenc", "http://schemas.xmlsoap.org/soap/encoding/");
         envelopeElm.addAttribute("xmlns:tns", "urn:boxnet");
         envelopeElm.addAttribute("xmlns:types", "urn:boxnet/encodedTypes");
-        envelopeElm.addAttribute("xmlns:xsi",
-                "http://www.w3.org/2001/XMLSchema-instance");
-        envelopeElm.addAttribute("xmlns:xsd",
-                "http://www.w3.org/2001/XMLSchema");
+        envelopeElm.addAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        envelopeElm.addAttribute("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
         doc.setRootElement(envelopeElm);
-        Element bodyElm = DocumentHelper
-                .createElement(BoxConstant.PARAM_NAME_SOAP_BODY);
-        bodyElm.addAttribute("soap:encodingStyle",
-                "http://schemas.xmlsoap.org/soap/encoding/");
+        Element bodyElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_SOAP_BODY);
+        bodyElm.addAttribute("soap:encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/");
         envelopeElm.add(bodyElm);
         return doc;
     }
@@ -161,5 +151,54 @@ public class BaseBoxMethod {
         Element elm = DocumentHelper.createElement(elmName);
         elm.addAttribute("xsi:type", elmType);
         return elm;
+    }
+
+    /**
+     * append url param, e.g. key=aaa, value=bbb, the string buffer will be
+     * appended '&aaa=bbb'
+     * 
+     * @param sb
+     *            string buffer
+     * @param key
+     *            key
+     * @param value
+     *            value
+     */
+    protected void appendUrlParam(StringBuffer sb, String key, String value) {
+        sb.append(BoxConstant.AND_SIGN_STRING);
+        sb.append(key);
+        sb.append(BoxConstant.EQUALS_SIGN_STRING);
+        if (value != null) {
+            sb.append(value);
+        } else {
+            sb.append("");
+        }
+    }
+
+    /**
+     * append url params, e.g. key=params[] values=a,b,c, the string buffer will
+     * be appended '&params[]=a&params[]=b&params[]=c'.
+     * 
+     * @param sb
+     *            string buffer
+     * @param key
+     *            key
+     * @param values
+     *            value array
+     */
+    protected void appendUrlParams(StringBuffer sb, String key, String[] values) {
+        if (values == null) {
+            sb.append(BoxConstant.AND_SIGN_STRING);
+            sb.append(key);
+            sb.append(BoxConstant.EQUALS_SIGN_STRING);
+        } else {
+            for (int i = 0; i < values.length; i++) {
+                String value = values[i];
+                sb.append(BoxConstant.AND_SIGN_STRING);
+                sb.append(key);
+                sb.append(BoxConstant.EQUALS_SIGN_STRING);
+                sb.append(value);
+            }
+        }
     }
 }

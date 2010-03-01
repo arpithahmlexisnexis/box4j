@@ -11,6 +11,11 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFolder;
  */
 public class BoxFolderImpl implements BoxFolder {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3688421474186239469L;
+
     /** folder id. */
     private String folderId;
 

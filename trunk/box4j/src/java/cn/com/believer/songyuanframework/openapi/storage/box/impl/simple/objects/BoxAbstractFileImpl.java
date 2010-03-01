@@ -14,6 +14,11 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxTag;
  */
 public class BoxAbstractFileImpl implements BoxAbstractFile {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -288942247904946630L;
+
     /** file id or folder id. */
     private String id;
 

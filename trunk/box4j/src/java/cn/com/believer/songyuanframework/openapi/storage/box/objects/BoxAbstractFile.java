@@ -3,6 +3,7 @@
  */
 package cn.com.believer.songyuanframework.openapi.storage.box.objects;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Jimmy
  * 
  */
-public interface BoxAbstractFile {
+public interface BoxAbstractFile extends Serializable {
 
     /**
      * @return the id

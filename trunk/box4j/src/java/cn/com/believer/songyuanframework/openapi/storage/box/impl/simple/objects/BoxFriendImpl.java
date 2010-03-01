@@ -13,6 +13,11 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFriend;
  */
 public class BoxFriendImpl implements BoxFriend {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6796710046527424485L;
+
     /** friend's name. */
     private String name;
 

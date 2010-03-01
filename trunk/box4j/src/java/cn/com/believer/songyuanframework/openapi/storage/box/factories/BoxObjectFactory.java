@@ -5,6 +5,7 @@ package cn.com.believer.songyuanframework.openapi.storage.box.factories;
 
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.Box;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxAbstractFile;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxComment;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFile;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFolder;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFriend;
@@ -107,5 +108,15 @@ public class BoxObjectFactory extends BaseBoxFactory {
     public static BoxAbstractFile createBoxAbstractFile() {
         Object obj = newInstanceOf("box4j.config.objectfactory.BoxAbstractFile");
         return (BoxAbstractFile) obj;
+    }
+
+    /**
+     * create a BoxComment object.
+     * 
+     * @return BoxComment object.
+     */
+    public static BoxComment createBoxComment() {
+        Object obj = newInstanceOf("box4j.config.objectfactory.BoxComment");
+        return (BoxComment) obj;
     }
 }

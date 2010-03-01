@@ -11,6 +11,11 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFile;
  */
 public class BoxFileImpl implements BoxFile {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7282178963330936208L;
+
     /** file id. */
     private String fileId;
 

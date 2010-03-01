@@ -3,7 +3,7 @@
  */
 package cn.com.believer.songyuanframework.openapi.storage.box.functions;
 
-import java.util.List;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxComment;
 
 /**
  * @author jjia
@@ -12,13 +12,13 @@ import java.util.List;
 public interface AddCommentResponse extends BoxResponse {
 
     /**
-     * @return the comments
+     * @return the comment
      */
-    public List getComments();
+    public BoxComment getComment();
 
     /**
-     * @param comments
-     *            the comments to set
+     * @param comment
+     *            the comment to set
      */
-    public void setComments(List comments);
+    public void setComment(BoxComment comment);
 }

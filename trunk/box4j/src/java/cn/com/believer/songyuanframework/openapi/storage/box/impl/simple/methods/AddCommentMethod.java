@@ -5,6 +5,7 @@ package cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.method
 
 import java.io.IOException;
 
+import org.apache.commons.codec.net.URLCodec;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -14,6 +15,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstan
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxResponseFactory;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.utils.ConverterUtils;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxComment;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxException;
 
 /**
@@ -47,6 +50,8 @@ public class AddCommentMethod extends BaseBoxMethod {
             appendUrlParam(urlBuff, BoxConstant.PARAM_NAME_AUTH_TOKEN, authToken);
             appendUrlParam(urlBuff, BoxConstant.PARAM_NAME_TARGET, target);
             appendUrlParam(urlBuff, BoxConstant.PARAM_NAME_TARGET_ID, targetId);
+            URLCodec codec = new URLCodec();
+            message = codec.encode(message, "ISO-8859-1");
             appendUrlParam(urlBuff, BoxConstant.PARAM_NAME_MESSAGE, message);
             try {
                 Document doc = httpManager.doGet(urlBuff.toString());
@@ -54,6 +59,11 @@ public class AddCommentMethod extends BaseBoxMethod {
                 Element statusElm = responseElm.element(BoxConstant.PARAM_NAME_STATUS);
                 String status = statusElm.getText();
                 addCommentResponse.setStatus(status);
+                Element commentElm = responseElm.element(BoxConstant.PARAM_NAME_COMMENT);
+                if (commentElm != null) {
+                    BoxComment boxComment = ConverterUtils.toBoxComment(commentElm);
+                    addCommentResponse.setComment(boxComment);
+                }
             } catch (DocumentException e) {
                 BoxException be = new BoxException("failed to parse to a document.", e);
                 be.setStatus(addCommentResponse.getStatus());
@@ -64,7 +74,7 @@ public class AddCommentMethod extends BaseBoxMethod {
             Document document = DocumentHelper.createDocument();
             Element requestElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_REQUEST);
             document.add(requestElm);
-            
+
             Element actionElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_ACTION);
             Element apiKeyElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_API_KEY);
             Element authTokenElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_AUTH_TOKEN);
@@ -87,13 +97,16 @@ public class AddCommentMethod extends BaseBoxMethod {
             try {
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElm = doc.getRootElement();
-                Element statusElm = responseElm
-                        .element(BoxConstant.PARAM_NAME_STATUS);
+                Element statusElm = responseElm.element(BoxConstant.PARAM_NAME_STATUS);
                 String status = statusElm.getText();
                 addCommentResponse.setStatus(status);
+                Element commentElm = responseElm.element(BoxConstant.PARAM_NAME_COMMENT);
+                if (commentElm != null) {
+                    BoxComment boxComment = ConverterUtils.toBoxComment(commentElm);
+                    addCommentResponse.setComment(boxComment);
+                }
             } catch (DocumentException e) {
-                BoxException be = new BoxException(
-                        "failed to parse to a document.", e);
+                BoxException be = new BoxException("failed to parse to a document.", e);
                 be.setStatus(addCommentResponse.getStatus());
                 throw be;
             }

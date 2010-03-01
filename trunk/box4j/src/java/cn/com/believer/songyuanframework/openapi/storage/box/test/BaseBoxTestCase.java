@@ -20,12 +20,16 @@ import cn.com.believer.songyuanframework.openapi.storage.box.BoxExternalAPI;
 import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstant;
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxRequestFactory;
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxResponseFactory;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToTagRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToTagResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteCommentRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteCommentResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DownloadRequest;
@@ -38,6 +42,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccoun
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetCommentsRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetCommentsResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFriendsRequest;
@@ -69,6 +75,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyReg
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.SimpleBoxImpl;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.core.BoxHTTPManager;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxAbstractFile;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxComment;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxException;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxUser;
 import junit.framework.TestCase;
@@ -736,6 +743,110 @@ public class BaseBoxTestCase extends TestCase {
                     correctEmails, "PrivateShareMessage", true);
             privateShareResponse = boxExternalAPI.privateShare(privateShareRequest);
             assertEquals(BoxConstant.STATUS_PRIVATE_SHARE_OK, privateShareResponse.getStatus());
+
+            /** add comment */
+            AddCommentResponse addCommentResponse;
+            AddCommentRequest addCommentRequest;
+
+            GetCommentsResponse getCommentsResponse;
+            GetCommentsRequest getCommentsRequest;
+            String comment1 = "I like it! 1st";
+            String comment2 = "I like it! 2st";
+
+            // wrong api key
+            addCommentRequest = BoxRequestFactory.createAddCommentRequest(incorrectApiKey, authToken, "file",
+                    rootFile1Id, "I like it!");
+            addCommentResponse = boxExternalAPI.addComment(addCommentRequest);
+            assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, addCommentResponse.getStatus());
+
+            // wrong auth token
+            addCommentRequest = BoxRequestFactory.createAddCommentRequest(apiKey, incorrectAuthToken, "file",
+                    rootFile1Id, "I like it!");
+            addCommentResponse = boxExternalAPI.addComment(addCommentRequest);
+            assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, addCommentResponse.getStatus());
+
+            // wrong file id
+            addCommentRequest = BoxRequestFactory.createAddCommentRequest(apiKey, authToken, "file", incorrectId,
+                    "I like it!");
+            addCommentResponse = boxExternalAPI.addComment(addCommentRequest);
+            assertEquals(BoxConstant.STATUS_ADD_COMMENT_ERROR, addCommentResponse.getStatus());
+
+            // successfully add 2 comments
+            addCommentRequest = BoxRequestFactory.createAddCommentRequest(apiKey, authToken, "file", rootFile1Id,
+                    comment1);
+            addCommentResponse = boxExternalAPI.addComment(addCommentRequest);
+            assertEquals(BoxConstant.STATUS_ADD_COMMENT_OK, addCommentResponse.getStatus());
+
+            addCommentRequest = BoxRequestFactory.createAddCommentRequest(apiKey, authToken, "file", rootFile1Id,
+                    comment2);
+            addCommentResponse = boxExternalAPI.addComment(addCommentRequest);
+            assertEquals(BoxConstant.STATUS_ADD_COMMENT_OK, addCommentResponse.getStatus());
+
+            // check comments successfully added.
+            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, authToken, "file", rootFile1Id);
+            getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
+            assertEquals(BoxConstant.STATUS_GET_COMMENTS_OK, getCommentsResponse.getStatus());
+            boolean haveComment = false;
+            for (int i = 0; i < getCommentsResponse.getComments().size(); i++) {
+                BoxComment boxComment = (BoxComment) getCommentsResponse.getComments().get(i);
+                String comment = boxComment.getMessage();
+                if (comment1.equals(comment)) {
+                    haveComment = true;
+                }
+            }
+            assertTrue(haveComment);
+            
+            /** get comments */
+            // wrong api key
+            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(incorrectApiKey, authToken, "file", rootFile1Id);
+            getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
+            assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, getCommentsResponse.getStatus());
+            
+            // wrong auth token
+            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, incorrectAuthToken, "file", rootFile1Id);
+            getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
+            assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getCommentsResponse.getStatus());
+            
+            // wrong file id
+            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, authToken, "file", incorrectId);
+            getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
+            assertEquals(BoxConstant.STATUS_GET_COMMENTS_ERROR, getCommentsResponse.getStatus());
+
+            /** delete comment */
+            DeleteCommentRequest deleteCommentRequest;
+            DeleteCommentResponse deleteCommentResponse;
+            
+            // wrong api key
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(incorrectApiKey, authToken, rootFile1Id);
+            deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
+            assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, deleteCommentResponse.getStatus());
+            
+            // wrong auth token
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, incorrectAuthToken, rootFile1Id);
+            deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
+            assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, deleteCommentResponse.getStatus());
+            
+            // wrong file id
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, authToken, incorrectId);
+            deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
+            assertEquals(BoxConstant.STATUS_DELETE_COMMENT_ERROR, deleteCommentResponse.getStatus());
+            
+            // delete comment successfully
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, authToken, rootFile1Id);
+            deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
+            assertEquals(BoxConstant.STATUS_DELETE_COMMENT_OK, deleteCommentResponse.getStatus());
+            
+            boolean fileExists = false;
+            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, authToken, "file", rootFile1Id);
+            getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
+            for (int i = 0; i < getCommentsResponse.getComments().size(); i++) {
+                BoxComment boxComment = (BoxComment) getCommentsResponse.getComments().get(i);
+                String comment = boxComment.getMessage();
+                if (comment1.equals(comment)) {
+                    fileExists = true;
+                }
+            }
+            assertFalse(fileExists);
 
             /** add to tag */
             AddToTagResponse addToTagResponse;

@@ -11,6 +11,7 @@ import org.dom4j.Element;
 import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstant;
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxObjectFactory;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.Box;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxComment;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFile;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFolder;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFriend;
@@ -58,23 +59,16 @@ public final class ConverterUtils {
      */
     public static BoxFolder toBoxFolder(Element folderElm) {
         BoxFolder boxFolder = BoxObjectFactory.createBoxFolder();
-        Element folderIdElm = folderElm
-                .element(BoxConstant.PARAM_NAME_FOLDER_ID);
-        Element folderNameElm = folderElm
-                .element(BoxConstant.PARAM_NAME_FOLDER_NAME);
-        Element folderTypeIdElm = folderElm
-                .element(BoxConstant.PARAM_NAME_FOLDER_TYPE_ID);
-        Element parentFolderIdElm = folderElm
-                .element(BoxConstant.PARAM_NAME_PARENT_FOLDER_ID);
+        Element folderIdElm = folderElm.element(BoxConstant.PARAM_NAME_FOLDER_ID);
+        Element folderNameElm = folderElm.element(BoxConstant.PARAM_NAME_FOLDER_NAME);
+        Element folderTypeIdElm = folderElm.element(BoxConstant.PARAM_NAME_FOLDER_TYPE_ID);
+        Element parentFolderIdElm = folderElm.element(BoxConstant.PARAM_NAME_PARENT_FOLDER_ID);
         Element userIdElm = folderElm.element(BoxConstant.PARAM_NAME_USER_ID);
         Element pathElm = folderElm.element(BoxConstant.PARAM_NAME_PATH);
         Element sharedElm = folderElm.element(BoxConstant.PARAM_NAME_SHARED);
-        Element publicNameElm = folderElm
-                .element(BoxConstant.PARAM_NAME_PUBLIC_NAME);
-        Element showCommentsElm = folderElm
-                .element(BoxConstant.PARAM_NAME_SHOW_COMMENTS);
-        Element passwordElm = folderElm
-                .element(BoxConstant.PARAM_NAME_PASSWORD);
+        Element publicNameElm = folderElm.element(BoxConstant.PARAM_NAME_PUBLIC_NAME);
+        Element showCommentsElm = folderElm.element(BoxConstant.PARAM_NAME_SHOW_COMMENTS);
+        Element passwordElm = folderElm.element(BoxConstant.PARAM_NAME_PASSWORD);
 
         boxFolder.setFolderId(folderIdElm.getText());
         boxFolder.setFolderName(folderNameElm.getText());
@@ -115,11 +109,9 @@ public final class ConverterUtils {
         Element fileNameElm = infoElm.element(BoxConstant.PARAM_NAME_FILE_NAME);
         Element folderIdElm = infoElm.element(BoxConstant.PARAM_NAME_FOLDER_ID);
         Element sharedElm = infoElm.element(BoxConstant.PARAM_NAME_SHARED);
-        Element sharedNameElm = infoElm
-                .element(BoxConstant.PARAM_NAME_SHARED_NAME);
+        Element sharedNameElm = infoElm.element(BoxConstant.PARAM_NAME_SHARED_NAME);
         Element sizeElm = infoElm.element(BoxConstant.PARAM_NAME_SIZE);
-        Element descriptionElm = infoElm
-                .element(BoxConstant.PARAM_NAME_DESCRIPTION);
+        Element descriptionElm = infoElm.element(BoxConstant.PARAM_NAME_DESCRIPTION);
         Element sha1Elm = infoElm.element(BoxConstant.PARAM_NAME_SHA1);
         Element createdElm = infoElm.element(BoxConstant.PARAM_NAME_CREATED);
         Element updatedElm = infoElm.element(BoxConstant.PARAM_NAME_UPDATED);
@@ -227,8 +219,7 @@ public final class ConverterUtils {
                 List subscriptionList = new ArrayList();
                 if (subscriptionsElm != null) {
                     for (int j = 0; j < subscriptionsElm.nodeCount(); j++) {
-                        Element subscriptionElm = (Element) subscriptionsElm
-                                .node(j);
+                        Element subscriptionElm = (Element) subscriptionsElm.node(j);
                         BoxSubscription subscription = toSubscription(subscriptionElm);
                         subscriptionList.add(subscription);
                     }
@@ -289,5 +280,64 @@ public final class ConverterUtils {
             subscription.setStatus(statusElm.getText());
         }
         return subscription;
+    }
+
+    /**
+     * @param commentElm
+     *            comment element
+     * @return box comment
+     */
+    public static BoxComment toBoxComment(Element commentElm) {
+        BoxComment boxComment = BoxObjectFactory.createBoxComment();
+        Element commentIdElm = commentElm.element("comment_id");
+        Element messageElm = commentElm.element("message");
+        Element userIdElm = commentElm.element("user_id");
+        Element userNameElm = commentElm.element("user_name");
+        Element createdElm = commentElm.element("created");
+        Element avatarUrlElm = commentElm.element("avatar_url");
+
+        if (commentIdElm != null) {
+            boxComment.setCommentId(commentElm.getText());
+        }
+        if (messageElm != null) {
+            boxComment.setMessage(messageElm.getText());
+        }
+        if (userIdElm != null) {
+            boxComment.setUserId(userIdElm.getText());
+        }
+        if (userNameElm != null) {
+            boxComment.setUserName(userNameElm.getText());
+        }
+        if (createdElm != null) {
+            long created = 0;
+            try {
+                created = Long.parseLong(createdElm.getText());
+            } catch (NumberFormatException e) {
+            }
+            boxComment.setCreated(created);
+        }
+        if (avatarUrlElm != null) {
+            boxComment.setCommentId(avatarUrlElm.getText());
+        }
+
+        return boxComment;
+    }
+
+    /**
+     * 
+     * @param commentsElm
+     *            comments element
+     * @return list of comment object
+     */
+    public static List toBoxComments(Element commentsElm) {
+        List comments = new ArrayList();
+        if (commentsElm != null) {
+            for (int i = 0; i < commentsElm.nodeCount(); i++) {
+                Element commentElm = (Element) commentsElm.node(i);
+                BoxComment boxComment = toBoxComment(commentElm);
+                comments.add(boxComment);
+            }
+        }
+        return comments;
     }
 }

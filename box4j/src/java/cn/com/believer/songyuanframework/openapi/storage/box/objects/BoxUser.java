@@ -3,11 +3,13 @@
  */
 package cn.com.believer.songyuanframework.openapi.storage.box.objects;
 
+import java.io.Serializable;
+
 /**
  * @author Jimmy
  * 
  */
-public interface BoxUser {
+public interface BoxUser extends Serializable {
 
     /**
      * @return the login

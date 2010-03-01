@@ -6,6 +6,7 @@ package cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.functi
 import java.util.List;
 
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxComment;
 
 /**
  * @author jjia
@@ -17,20 +18,19 @@ public class AddCommentResponseImpl extends BoxResponseImpl implements
     /**
      * comments.
      */
-    private List comments;
+    private BoxComment comment;
 
     /**
-     * @return the comments
+     * @return the comment
      */
-    public List getComments() {
-        return this.comments;
+    public BoxComment getComment() {
+        return this.comment;
     }
 
     /**
-     * @param comments
-     *            the comments to set
+     * @param comment the comment to set
      */
-    public void setComments(List comments) {
-        this.comments = comments;
+    public void setComment(BoxComment comment) {
+        this.comment = comment;
     }
 }

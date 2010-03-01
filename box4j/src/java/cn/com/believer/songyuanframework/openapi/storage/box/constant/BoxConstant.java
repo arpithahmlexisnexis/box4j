@@ -326,10 +326,18 @@ public class BoxConstant {
     /** parameter name. */
     public static final String PARAM_NAME_SOAP_BODY = "soap:Body";
 
+    /** parameter name. */
+    public static final String PARAM_NAME_COMMENT = "comment";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_COMMENTS = "comments";
+
+    //
     // soap use
     /** soap element. */
     public static final String SOAP_TYPE_STRING = "xsd:string";
 
+    //
     // status string
     /** status code. */
     public static final String STATUS_GET_TICKET_OK = "get_ticket_ok";
@@ -441,8 +449,28 @@ public class BoxConstant {
     
     /** status code. */
     public static final String STATUS_GET_ACCOUNT_INFO_OK = "get_account_info_ok";
+    
+    /** status code. */
+    public static final String STATUS_ADD_COMMENT_OK = "add_comment_ok";
+    
+    /** status code. */
+    public static final String STATUS_ADD_COMMENT_ERROR = "add_comment_error";
+    
+    /** status code. */
+    public static final String STATUS_GET_COMMENTS_OK = "get_comments_ok";
+    
+    /** status code. */
+    public static final String STATUS_GET_COMMENTS_ERROR = "get_comments_error";
+    
+    /** status code. */
+    public static final String STATUS_DELETE_COMMENT_OK = "delete_comment_ok";
+    
+    /** status code. */
+    public static final String STATUS_DELETE_COMMENT_ERROR = "delete_comment_error";
 
+    // 
     // request factory interface key
+    
     /** request factory key. */
     public static final String REQUEST_FACTORY_KEY_ADD_TO_MY_BOX_REQUEST = 
         "box4j.config.requestfactory.AddToMyBoxRequest";

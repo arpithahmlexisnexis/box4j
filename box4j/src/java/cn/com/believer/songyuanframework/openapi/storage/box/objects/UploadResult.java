@@ -3,12 +3,14 @@
  */
 package cn.com.believer.songyuanframework.openapi.storage.box.objects;
 
+import java.io.Serializable;
+
 
 /**
  * @author Jimmy
  * 
  */
-public interface UploadResult {
+public interface UploadResult extends Serializable {
 
     /**
      * @return the file

@@ -776,11 +776,13 @@ public class BaseBoxTestCase extends TestCase {
                     comment1);
             addCommentResponse = boxExternalAPI.addComment(addCommentRequest);
             assertEquals(BoxConstant.STATUS_ADD_COMMENT_OK, addCommentResponse.getStatus());
+            assertEquals(comment1, addCommentResponse.getComment().getMessage());
 
             addCommentRequest = BoxRequestFactory.createAddCommentRequest(apiKey, authToken, "file", rootFile1Id,
                     comment2);
             addCommentResponse = boxExternalAPI.addComment(addCommentRequest);
             assertEquals(BoxConstant.STATUS_ADD_COMMENT_OK, addCommentResponse.getStatus());
+            assertEquals(comment2, addCommentResponse.getComment().getMessage());
 
             // check comments successfully added.
             getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, authToken, "file", rootFile1Id);
@@ -795,6 +797,7 @@ public class BaseBoxTestCase extends TestCase {
                 }
             }
             assertTrue(haveComment);
+            assertEquals(2, getCommentsResponse.getComments().size());
             
             /** get comments */
             // wrong api key
@@ -817,22 +820,22 @@ public class BaseBoxTestCase extends TestCase {
             DeleteCommentResponse deleteCommentResponse;
             
             // wrong api key
-            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(incorrectApiKey, authToken, rootFile1Id);
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(incorrectApiKey, authToken, addCommentResponse.getComment().getCommentId());
             deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
             assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, deleteCommentResponse.getStatus());
             
             // wrong auth token
-            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, incorrectAuthToken, rootFile1Id);
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, incorrectAuthToken, addCommentResponse.getComment().getCommentId());
             deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
             assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, deleteCommentResponse.getStatus());
             
-            // wrong file id
+            // wrong comment id
             deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, authToken, incorrectId);
             deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
             assertEquals(BoxConstant.STATUS_DELETE_COMMENT_ERROR, deleteCommentResponse.getStatus());
             
-            // delete comment successfully
-            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, authToken, rootFile1Id);
+            // delete comment2 successfully
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, authToken, addCommentResponse.getComment().getCommentId());
             deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
             assertEquals(BoxConstant.STATUS_DELETE_COMMENT_OK, deleteCommentResponse.getStatus());
             
@@ -842,7 +845,7 @@ public class BaseBoxTestCase extends TestCase {
             for (int i = 0; i < getCommentsResponse.getComments().size(); i++) {
                 BoxComment boxComment = (BoxComment) getCommentsResponse.getComments().get(i);
                 String comment = boxComment.getMessage();
-                if (comment1.equals(comment)) {
+                if (comment2.equals(comment)) {
                     fileExists = true;
                 }
             }

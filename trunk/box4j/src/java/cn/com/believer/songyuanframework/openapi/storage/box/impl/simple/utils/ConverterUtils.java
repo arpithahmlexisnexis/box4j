@@ -297,7 +297,7 @@ public final class ConverterUtils {
         Element avatarUrlElm = commentElm.element("avatar_url");
 
         if (commentIdElm != null) {
-            boxComment.setCommentId(commentElm.getText());
+            boxComment.setCommentId(commentIdElm.getText());
         }
         if (messageElm != null) {
             boxComment.setMessage(messageElm.getText());
@@ -317,7 +317,7 @@ public final class ConverterUtils {
             boxComment.setCreated(created);
         }
         if (avatarUrlElm != null) {
-            boxComment.setCommentId(avatarUrlElm.getText());
+            boxComment.setAvatarUrl(avatarUrlElm.getText());
         }
 
         return boxComment;

@@ -13,31 +13,31 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchReq
 public class SearchRequestImpl extends BoxRequestImpl implements SearchRequest {
 
     /** auth token. */
-    private String   authToken;
+    private String authToken;
 
     /** The text of which the user wishes to perform a search. */
-    private String   query;
+    private String query;
 
     /**
      * The page number, which begins on page 1. This coincides with the per_page
      * parameter.
      */
-    private long     page;
+    private long page;
 
     /** The number of search results to display per page. */
-    private long     perPage;
+    private long perPage;
 
     /**
      * The method in which the results may be sorted. Values can be 'relevance',
      * 'name', 'date', or 'size'.
      */
-    private String   sort;
+    private String sort;
 
     /**
      * Can specify whether to sort content in ascending or descending order.
      * Values can be 'asc' or 'desc'.
      */
-    private String   direction;
+    private String direction;
 
     /**
      * Allows you to set additional, optional parameters:

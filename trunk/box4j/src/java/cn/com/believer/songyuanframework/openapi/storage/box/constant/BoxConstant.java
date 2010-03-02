@@ -332,6 +332,33 @@ public class BoxConstant {
     /** parameter name. */
     public static final String PARAM_NAME_COMMENTS = "comments";
 
+    /** parameter name. */
+    public static final String PARAM_NAME_QUERY = "query";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_PAGE = "page";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_PER_PAGE = "per_page";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_SORT = "sort";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_DIRECTION = "direction";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_BEGIN_TIMESTAMP = "begin_timestamp";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_END_TIMESTAMP = "end_timestamp";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_UPDATES = "updates";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_UPDATE = "update";
+
     //
     // soap use
     /** soap element. */
@@ -467,6 +494,12 @@ public class BoxConstant {
     
     /** status code. */
     public static final String STATUS_DELETE_COMMENT_ERROR = "delete_comment_error";
+    
+    /** status code. */
+    public static final String STATUS_S_GET_UPDATES = "s_get_updates";
+    
+    /** status code. */
+    public static final String STATUS_E_INVALID_TIMESTAMP = "e_invalid_timestamp";
 
     // 
     // request factory interface key

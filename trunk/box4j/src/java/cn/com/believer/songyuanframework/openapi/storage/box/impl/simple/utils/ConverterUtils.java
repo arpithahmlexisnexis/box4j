@@ -17,6 +17,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFolder;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFriend;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxSubscription;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxTag;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxUpdate;
 
 /**
  * @author Jimmy
@@ -339,5 +340,33 @@ public final class ConverterUtils {
             }
         }
         return comments;
+    }
+
+    /**
+     * @param updatesElm
+     * @return
+     */
+    public static List toBoxUpdates(Element updatesElm) {
+        List updates = new ArrayList();
+        if (updatesElm != null) {
+            for (int i = 0; i < updatesElm.nodeCount(); i++) {
+                Element updateElm = (Element) updatesElm.node(i);
+                BoxUpdate boxUpdate = toBoxUpdate(updateElm);
+                updates.add(boxUpdate);
+
+            }
+        }
+        return updates;
+    }
+
+    /**
+     * @param updateElm
+     * @return
+     */
+    private static BoxUpdate toBoxUpdate(Element updateElm) {
+        BoxUpdate boxUpdate = BoxObjectFactory.createBoxUpdate();
+        Element updateIdElm = updateElm.element("update_id");
+        // TODO Auto-generated method stub
+        return null;
     }
 }

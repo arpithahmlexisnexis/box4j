@@ -50,6 +50,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFriend
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFriendsResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveRequest;
@@ -850,6 +852,28 @@ public class BaseBoxTestCase extends TestCase {
                 }
             }
             assertFalse(fileExists);
+
+            /** get updates */
+            GetUpdatesResponse getUpdatesResponse;
+            GetUpdatesRequest getUpdatesRequest;
+            
+            String[] getUpdatesParams = {"nozip"};
+            
+            // wrong api key
+            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(incorrectApiKey, authToken, "0", "0", getUpdatesParams);
+            getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
+            assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, getUpdatesResponse.getStatus());
+
+            // wrong auth token
+            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, incorrectAuthToken, "0", "0", getUpdatesParams);
+            getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
+            assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getUpdatesResponse.getStatus());
+            
+            // get updates
+            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, authToken, "0", String.valueOf(System.currentTimeMillis()), getUpdatesParams);
+            getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
+
+            
 
             /** add to tag */
             AddToTagResponse addToTagResponse;

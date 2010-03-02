@@ -1,0 +1,61 @@
+<response>
+    <status>s_get_updates</status>
+    <updates>
+        <update>
+            <update_id>242628162</update_id>
+            <user_id>7189314</user_id>
+            <user_name>temp_test_use_for_box4j_Please_Delete_It_1267544641671@test.com</user_name>
+            <user_email>temp_test_use_for_box4j_Please_Delete_It_1267544641671@test.com</user_email>
+            <updated>1267544649</updated>
+            <update_type>added</update_type>
+            <folder_id>38728244</folder_id>
+            <folder_name>Folder_Name1267544641671</folder_name>
+            <shared>1</shared>
+            <shared_name>jvxr72fhls</shared_name>
+            <owner_id>7189314</owner_id>
+            <folder_path />
+            <collab_access>1</collab_access>
+            <comment_count>0</comment_count>
+            <files>
+                <file id="397600658" file_name="File_Name126754464167144835251695592310871.txt" shared="0"
+                    sha1="da39a3ee5e6b4b0d3255bfef95601890afd80709" created="1267544648" updated="1267544648" size="0"
+                    created_by="7189314" updated_by="7189314" />
+                <file id="397600662" file_name="File_Name126754464167131339623778372708522.txt" shared="0"
+                    sha1="da39a3ee5e6b4b0d3255bfef95601890afd80709" created="1267544648" updated="1267544648" size="0"
+                    created_by="7189314" updated_by="7189314" />
+            </files>
+            <discussions />
+            <folders />
+        </update>
+        <update>
+            <update_id>242628086</update_id>
+            <user_id>7189314</user_id>
+            <user_name>temp_test_use_for_box4j_Please_Delete_It_1267544641671@test.com</user_name>
+            <user_email>temp_test_use_for_box4j_Please_Delete_It_1267544641671@test.com</user_email>
+            <updated>1267544648</updated>
+            <update_type>added</update_type>
+            <folder_id>0</folder_id>
+            <folder_name>All Files</folder_name>
+            <shared>0</shared>
+            <shared_name />
+            <owner_id>7189314</owner_id>
+            <folder_path />
+            <collab_access>1</collab_access>
+            <comment_count>0</comment_count>
+            <files>
+                <file id="397600594" file_name="jscriptdeviationsfromes3.pdf" shared="0"
+                    sha1="63fe26ba7d64ac0e567113206e8ea9f5876bdcca" created="1267544641" updated="1267544641" size="593031"
+                    created_by="7189314" updated_by="7189314" />
+                <file id="397600648" file_name="File_Name12675446416712" shared="0"
+                    sha1="ddb616bf460c6378017ee6e7210aa7d5fcf86924" created="1267544648" updated="1267544648" size="26"
+                    created_by="7189314" updated_by="7189314" />
+                <file id="397600650" file_name="File_Name12675446416711" shared="1"
+                    sha1="58cf65bbe23de9bb42c1be6370c6cf39bee43494" created="1267544648" updated="1267544657" size="26"
+                    created_by="7189314" updated_by="7189314" />
+            </files>
+            <discussions />
+            <folders />
+        </update>
+    </updates>
+</response>
+ 

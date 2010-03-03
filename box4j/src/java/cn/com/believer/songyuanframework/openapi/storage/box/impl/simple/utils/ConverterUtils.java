@@ -344,7 +344,8 @@ public final class ConverterUtils {
 
     /**
      * @param updatesElm
-     * @return
+     *            updates element
+     * @return list of update object
      */
     public static List toBoxUpdates(Element updatesElm) {
         List updates = new ArrayList();
@@ -353,7 +354,6 @@ public final class ConverterUtils {
                 Element updateElm = (Element) updatesElm.node(i);
                 BoxUpdate boxUpdate = toBoxUpdate(updateElm);
                 updates.add(boxUpdate);
-
             }
         }
         return updates;
@@ -361,12 +361,97 @@ public final class ConverterUtils {
 
     /**
      * @param updateElm
-     * @return
+     *            update element
+     * @return box update object
      */
     private static BoxUpdate toBoxUpdate(Element updateElm) {
         BoxUpdate boxUpdate = BoxObjectFactory.createBoxUpdate();
         Element updateIdElm = updateElm.element("update_id");
-        // TODO Auto-generated method stub
-        return null;
+        if (updateIdElm != null) {
+            boxUpdate.setUpdateId(updateIdElm.getText());
+        }
+        Element userIdElm = updateElm.element("user_id");
+        if (userIdElm != null) {
+            boxUpdate.setUserId(userIdElm.getText());
+        }
+        Element userNameElm = updateElm.element("user_name");
+        if (userNameElm != null) {
+            boxUpdate.setUserName(userNameElm.getText());
+        }
+        Element userEmailElm = updateElm.element("user_email");
+        if (userEmailElm != null) {
+            boxUpdate.setUserEmail(userEmailElm.getText());
+        }
+        Element updatedElm = updateElm.element("updated");
+        if (updatedElm != null) {
+            boxUpdate.setUpdated(updatedElm.getText());
+        }
+        Element updateTypeElm = updateElm.element("update_type");
+        if (updateTypeElm != null) {
+            boxUpdate.setUpdateType(updateTypeElm.getText());
+        }
+        Element folderIdElm = updateElm.element("folder_id");
+        if (folderIdElm != null) {
+            boxUpdate.setFolderId(folderIdElm.getText());
+        }
+        Element folderNameElm = updateElm.element("folder_name");
+        if (folderNameElm != null) {
+            boxUpdate.setFolderName(folderNameElm.getText());
+        }
+        Element sharedElm = updateElm.element("shared");
+        if (sharedElm != null) {
+            boxUpdate.setShared(sharedElm.getText());
+        }
+        Element sharedNameElm = updateElm.element("shared_name");
+        if (sharedNameElm != null) {
+            boxUpdate.setSharedName(sharedNameElm.getText());
+        }
+        Element ownerIdElm = updateElm.element("owner_id");
+        if (ownerIdElm != null){
+            boxUpdate.setOwnerId(ownerIdElm.getText());
+        }
+        Element folderPathElm = updateElm.element("folder_path");
+        if (folderPathElm != null) {
+            boxUpdate.setFolderPath(folderPathElm.getText());
+        }
+        Element collabAccessElm = updateElm.element("collab_access");
+        if (collabAccessElm != null) {
+            boxUpdate.setCollabAccess(collabAccessElm.getText());
+        }
+        Element commentCountElm = updateElm.element("comment_count");
+        if (commentCountElm != null) {
+            boxUpdate.setCommentCount(commentCountElm.getText());
+        }
+        Element filesElm = updateElm.element("files");
+        if (filesElm != null) {
+            List fileList = new ArrayList();
+            for (int i = 0; i < filesElm.nodeCount(); i++) {
+                Element fileElm = (Element) filesElm.node(i);
+                BoxFile boxFile = toBoxFile(fileElm);
+                fileList.add(boxFile);
+            }
+            boxUpdate.setFiles(fileList);
+        }
+        Element foldersElm = updateElm.element("folders");
+        if (foldersElm != null) {
+            List folderList = new ArrayList();
+            for (int i = 0; i < foldersElm.nodeCount(); i++) {
+                Element folderElm = (Element) foldersElm.node(i);
+                BoxFolder boxFolder = toBoxFolder(folderElm);
+                folderList.add(boxFolder);
+            }
+            boxUpdate.setFolders(folderList);
+        }
+        Element discussionsElm = updateElm.element("discussions");
+        if (discussionsElm != null) {
+            List discussionList = new ArrayList();
+            for (int i = 0; i < discussionsElm.nodeCount(); i++) {
+                Element discussionElm = (Element) discussionsElm.node(i);
+//                BoxDiscussion boxDiscussion = toBoxDiscussion(discussionElm);
+//                discussionList.add(boxDiscussion);
+            }
+            boxUpdate.setDiscussions(discussionList);
+        }
+        return boxUpdate;
     }
 }

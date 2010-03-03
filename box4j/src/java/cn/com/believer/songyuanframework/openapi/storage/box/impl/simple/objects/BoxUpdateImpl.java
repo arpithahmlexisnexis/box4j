@@ -19,7 +19,7 @@ public class BoxUpdateImpl implements BoxUpdate {
     private static final long serialVersionUID = -1273361195293990935L;
 
     /** update id. */
-    private String udpateId;
+    private String updateId;
 
     /** user id. */
     private String userId;
@@ -70,18 +70,18 @@ public class BoxUpdateImpl implements BoxUpdate {
     private List folders;
 
     /**
-     * @return the udpateId
+     * @return the updateId
      */
-    public String getUdpateId() {
-        return this.udpateId;
+    public String getUpdateId() {
+        return this.updateId;
     }
 
     /**
-     * @param udpateId
-     *            the udpateId to set
+     * @param updateId
+     *            the updateId to set
      */
-    public void setUdpateId(String udpateId) {
-        this.udpateId = udpateId;
+    public void setUpdateId(String updateId) {
+        this.updateId = updateId;
     }
 
     /**

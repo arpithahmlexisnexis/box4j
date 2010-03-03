@@ -13,15 +13,15 @@ import java.util.List;
 public interface BoxUpdate extends Serializable {
 
     /**
-     * @return the udpateId
+     * @return the updateId
      */
-    public String getUdpateId();
+    public String getUpdateId();
 
     /**
-     * @param udpateId
-     *            the udpateId to set
+     * @param updateId
+     *            the updateId to set
      */
-    public void setUdpateId(String udpateId);
+    public void setUpdateId(String updateId);
 
     /**
      * @return the userId

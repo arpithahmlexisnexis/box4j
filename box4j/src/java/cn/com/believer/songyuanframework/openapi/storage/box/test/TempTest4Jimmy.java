@@ -46,8 +46,6 @@ public class TempTest4Jimmy {
         GetAuthTokenRequest getAuthTokenRequest;
         getAuthTokenResponse = simAuthentication("paranoid945@gmail.com", "6343011", apiKey);
 
-        getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(apiKey, correctTicket);
-        getAuthTokenResponse = boxExternalAPI.getAuthToken(getAuthTokenRequest);
 
         GetAccountTreeResponse getAccountTreeResponse;
         GetAccountTreeRequest getAccountTreeRequest;

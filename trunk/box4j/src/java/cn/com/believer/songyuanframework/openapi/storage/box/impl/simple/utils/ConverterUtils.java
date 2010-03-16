@@ -61,7 +61,9 @@ public final class ConverterUtils {
     public static BoxFolder toBoxFolder(Element folderElm) {
         BoxFolder boxFolder = BoxObjectFactory.createBoxFolder();
         Element folderIdElm = folderElm.element(BoxConstant.PARAM_NAME_FOLDER_ID);
+        Element idElm = folderElm.element(BoxConstant.PARAM_NAME_ID);
         Element folderNameElm = folderElm.element(BoxConstant.PARAM_NAME_FOLDER_NAME);
+        Element nameElm = folderElm.element(BoxConstant.PARAM_NAME_NAME);
         Element folderTypeIdElm = folderElm.element(BoxConstant.PARAM_NAME_FOLDER_TYPE_ID);
         Element parentFolderIdElm = folderElm.element(BoxConstant.PARAM_NAME_PARENT_FOLDER_ID);
         Element userIdElm = folderElm.element(BoxConstant.PARAM_NAME_USER_ID);
@@ -70,30 +72,76 @@ public final class ConverterUtils {
         Element publicNameElm = folderElm.element(BoxConstant.PARAM_NAME_PUBLIC_NAME);
         Element showCommentsElm = folderElm.element(BoxConstant.PARAM_NAME_SHOW_COMMENTS);
         Element passwordElm = folderElm.element(BoxConstant.PARAM_NAME_PASSWORD);
+        Element checksumElm = folderElm.element(BoxConstant.PARAM_NAME_CHECKSUM);
+        Element hasCollaboratorsElm = folderElm.element(BoxConstant.PARAM_NAME_HAS_COLLABORATORS);
 
-        boxFolder.setFolderId(folderIdElm.getText());
-        boxFolder.setFolderName(folderNameElm.getText());
+        if (folderIdElm != null) {
+            boxFolder.setFolderId(folderIdElm.getText());
+        } else if (idElm != null) {
+            boxFolder.setFolderId(idElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_FOLDER_ID) != null) {
+            boxFolder.setFolderId(folderElm.attributeValue(BoxConstant.PARAM_NAME_FOLDER_ID));
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_ID) != null) {
+            boxFolder.setFolderId(folderElm.attributeValue(BoxConstant.PARAM_NAME_ID));
+        }
+        if (folderNameElm != null) {
+            boxFolder.setFolderName(folderNameElm.getText());
+        } else if (nameElm != null) {
+            boxFolder.setFolderName(nameElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_FOLDER_NAME) != null) {
+            boxFolder.setFolderName(folderElm.attributeValue(BoxConstant.PARAM_NAME_FOLDER_NAME));
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_NAME) != null) {
+            boxFolder.setFolderName(folderElm.attributeValue(BoxConstant.PARAM_NAME_NAME));
+        }
         if (folderTypeIdElm != null) {
             boxFolder.setFolderTypeId(folderTypeIdElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_FOLDER_TYPE_ID) != null) {
+            boxFolder.setFolderTypeId(folderElm.attributeValue(BoxConstant.PARAM_NAME_FOLDER_TYPE_ID));
         }
-        boxFolder.setParentFolderId(parentFolderIdElm.getText());
+        if (parentFolderIdElm != null) {
+            boxFolder.setParentFolderId(parentFolderIdElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_PARENT_FOLDER_ID) != null) {
+            boxFolder.setParentFolderId(folderElm.attributeValue(BoxConstant.PARAM_NAME_PARENT_FOLDER_ID));
+        }
         if (passwordElm != null) {
             boxFolder.setPassword(passwordElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_PASSWORD) != null) {
+            boxFolder.setPassword(folderElm.attributeValue(BoxConstant.PARAM_NAME_PASSWORD));
         }
         if (pathElm != null) {
             boxFolder.setPath(pathElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_PATH) != null) {
+            boxFolder.setPath(folderElm.attributeValue(BoxConstant.PARAM_NAME_PATH));
         }
         if (publicNameElm != null) {
             boxFolder.setPublicName(publicNameElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_PUBLIC_NAME) != null) {
+            boxFolder.setPublicName(folderElm.attributeValue(BoxConstant.PARAM_NAME_PUBLIC_NAME));
         }
         if (sharedElm != null) {
             boxFolder.setShared(sharedElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_SHARED) != null) {
+            boxFolder.setShared(folderElm.attributeValue(BoxConstant.PARAM_NAME_SHARED));
         }
         if (showCommentsElm != null) {
             boxFolder.setShowComments(showCommentsElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_SHOW_COMMENTS) != null) {
+            boxFolder.setShowComments(folderElm.attributeValue(BoxConstant.PARAM_NAME_SHOW_COMMENTS));
         }
         if (userIdElm != null) {
             boxFolder.setUserId(userIdElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_USER_ID) != null) {
+            boxFolder.setUserId(folderElm.attributeValue(BoxConstant.PARAM_NAME_USER_ID));
+        }
+        if (checksumElm != null) {
+            boxFolder.setChecksum(checksumElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_CHECKSUM) != null) {
+            boxFolder.setChecksum(folderElm.attributeValue(BoxConstant.PARAM_NAME_CHECKSUM));
+        }
+        if (hasCollaboratorsElm != null) {
+            boxFolder.setHasCollaborators(hasCollaboratorsElm.getText());
+        } else if (folderElm.attributeValue(BoxConstant.PARAM_NAME_HAS_COLLABORATORS) != null) {
+            boxFolder.setHasCollaborators(folderElm.attributeValue(BoxConstant.PARAM_NAME_HAS_COLLABORATORS));
         }
         return boxFolder;
     }
@@ -107,7 +155,9 @@ public final class ConverterUtils {
         BoxFile boxFile = BoxObjectFactory.createBoxFile();
 
         Element fileIdElm = infoElm.element(BoxConstant.PARAM_NAME_FILE_ID);
+        Element idElm = infoElm.element(BoxConstant.PARAM_NAME_ID);
         Element fileNameElm = infoElm.element(BoxConstant.PARAM_NAME_FILE_NAME);
+        Element nameElm = infoElm.element(BoxConstant.PARAM_NAME_NAME);
         Element folderIdElm = infoElm.element(BoxConstant.PARAM_NAME_FOLDER_ID);
         Element sharedElm = infoElm.element(BoxConstant.PARAM_NAME_SHARED);
         Element sharedNameElm = infoElm.element(BoxConstant.PARAM_NAME_SHARED_NAME);
@@ -116,61 +166,111 @@ public final class ConverterUtils {
         Element sha1Elm = infoElm.element(BoxConstant.PARAM_NAME_SHA1);
         Element createdElm = infoElm.element(BoxConstant.PARAM_NAME_CREATED);
         Element updatedElm = infoElm.element(BoxConstant.PARAM_NAME_UPDATED);
+        Element createdByElm = infoElm.element(BoxConstant.PARAM_NAME_CREATED_BY);
+        Element updatedByElm = infoElm.element(BoxConstant.PARAM_NAME_UPDATED_BY);
         if (fileIdElm != null) {
             boxFile.setFileId(fileIdElm.getText());
+        } else if (idElm != null) {
+            boxFile.setFileId(idElm.getText());
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_FILE_ID) != null) {
+            boxFile.setFileId(infoElm.attributeValue(BoxConstant.PARAM_NAME_FILE_ID));
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_ID) != null) {
+            boxFile.setFileId(infoElm.attributeValue(BoxConstant.PARAM_NAME_ID));
         }
         if (fileNameElm != null) {
             boxFile.setFileName(fileNameElm.getText());
+        } else if (nameElm != null) {
+            boxFile.setFileName(nameElm.getText());
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_FILE_NAME) != null) {
+            boxFile.setFileName(infoElm.attributeValue(BoxConstant.PARAM_NAME_FILE_NAME));
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_NAME) != null) {
+            boxFile.setFileName(infoElm.attributeValue(BoxConstant.PARAM_NAME_NAME));
         }
         if (folderIdElm != null) {
             boxFile.setFolderId(folderIdElm.getText());
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_NAME) != null) {
+            boxFile.setFileName(infoElm.attributeValue(BoxConstant.PARAM_NAME_NAME));
         }
+        String sharedStr = "";
         if (sharedElm != null) {
-            String sharedStr = sharedElm.getText();
-            if ("0".equals(sharedStr)) {
-                boxFile.setShared(false);
-            } else {
-                boxFile.setShared(true);
-            }
+            sharedStr = sharedElm.getText();
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_SHARED) != null) {
+            sharedStr = infoElm.attributeValue(BoxConstant.PARAM_NAME_SHARED);
         }
+        if ("1".equals(sharedStr)) {
+            boxFile.setShared(true);
+        } else {
+            boxFile.setShared(false);
+        }
+
         if (sharedNameElm != null) {
             boxFile.setSharedName(sharedNameElm.getText());
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_NAME) != null) {
+            boxFile.setFileName(infoElm.attributeValue(BoxConstant.PARAM_NAME_NAME));
         }
+
+        long size = 0;
+        String sizeStr = "0";
         if (sizeElm != null) {
-            long size = 0;
-            String sizeStr = sizeElm.getText();
-            try {
-                size = Long.parseLong(sizeStr);
-            } catch (NumberFormatException e) {
-                size = Long.MIN_VALUE;
-            }
-            boxFile.setSize(size);
+            sizeStr = sizeElm.getText();
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_SIZE) != null) {
+            sizeStr = infoElm.attributeValue(BoxConstant.PARAM_NAME_SIZE);
         }
+        try {
+            size = Long.parseLong(sizeStr);
+        } catch (NumberFormatException e) {
+            size = Long.MIN_VALUE;
+        }
+        boxFile.setSize(size);
+
         if (descriptionElm != null) {
             boxFile.setDescription(descriptionElm.getText());
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_DESCRIPTION) != null) {
+            boxFile.setDescription(infoElm.attributeValue(BoxConstant.PARAM_NAME_DESCRIPTION));
         }
         if (sha1Elm != null) {
             boxFile.setSha1(sha1Elm.getText());
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_SHA1) != null) {
+            boxFile.setSha1(infoElm.attributeValue(BoxConstant.PARAM_NAME_SHA1));
         }
+        long created = 0;
+        String createdStr = "0";
         if (createdElm != null) {
-            long created = 0;
-            String createdStr = createdElm.getText();
-            try {
-                created = Long.parseLong(createdStr);
-            } catch (NumberFormatException e) {
-                created = Long.MIN_VALUE;
-            }
-            boxFile.setCreated(created);
+            createdStr = createdElm.getText();
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_CREATED) != null) {
+            createdStr = infoElm.attributeValue(BoxConstant.PARAM_NAME_CREATED);
         }
+        try {
+            created = Long.parseLong(createdStr);
+        } catch (NumberFormatException e) {
+            created = Long.MIN_VALUE;
+        }
+        boxFile.setCreated(created);
+
+        long updated = 0;
+        String updatedStr = "0";
         if (updatedElm != null) {
-            long updated = 0;
-            String updatedStr = updatedElm.getText();
-            try {
-                updated = Long.parseLong(updatedStr);
-            } catch (NumberFormatException e) {
-                updated = Long.MIN_VALUE;
-            }
-            boxFile.setUpdated(updated);
+            updatedStr = updatedElm.getText();
+        }
+        try {
+            updated = Long.parseLong(updatedStr);
+        } catch (NumberFormatException e) {
+            updated = Long.MIN_VALUE;
+        }
+        boxFile.setUpdated(updated);
+
+        if (createdByElm != null) {
+            String createdBy = createdByElm.getText();
+            boxFile.setCreatedBy(createdBy);
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_CREATED_BY) != null) {
+            boxFile.setCreatedBy(infoElm.attributeValue(BoxConstant.PARAM_NAME_CREATED_BY));
+        }
+
+        if (updatedByElm != null) {
+            String updatedBy = updatedByElm.getText();
+            boxFile.setUpdatedBy(updatedBy);
+        } else if (infoElm.attributeValue(BoxConstant.PARAM_NAME_UPDATED_BY) != null) {
+            boxFile.setUpdatedBy(infoElm.attributeValue(BoxConstant.PARAM_NAME_UPDATED_BY));
         }
 
         return boxFile;
@@ -407,7 +507,7 @@ public final class ConverterUtils {
             boxUpdate.setSharedName(sharedNameElm.getText());
         }
         Element ownerIdElm = updateElm.element("owner_id");
-        if (ownerIdElm != null){
+        if (ownerIdElm != null) {
             boxUpdate.setOwnerId(ownerIdElm.getText());
         }
         Element folderPathElm = updateElm.element("folder_path");
@@ -447,8 +547,8 @@ public final class ConverterUtils {
             List discussionList = new ArrayList();
             for (int i = 0; i < discussionsElm.nodeCount(); i++) {
                 Element discussionElm = (Element) discussionsElm.node(i);
-//                BoxDiscussion boxDiscussion = toBoxDiscussion(discussionElm);
-//                discussionList.add(boxDiscussion);
+                // BoxDiscussion boxDiscussion = toBoxDiscussion(discussionElm);
+                // discussionList.add(boxDiscussion);
             }
             boxUpdate.setDiscussions(discussionList);
         }

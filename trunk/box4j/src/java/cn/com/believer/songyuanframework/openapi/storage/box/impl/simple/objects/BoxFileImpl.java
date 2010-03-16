@@ -46,6 +46,12 @@ public class BoxFileImpl implements BoxFile {
     /** updated time. */
     private long updated;
 
+    /** user id of the one who created this file. */
+    private String createdBy;
+
+    /** user id of the one who updated this file. */
+    private String updatedBy;
+
     /**
      * @return the fileId
      */
@@ -194,5 +200,35 @@ public class BoxFileImpl implements BoxFile {
      */
     public void setUpdated(long updated) {
         this.updated = updated;
+    }
+
+    /**
+     * @return the createdBy
+     */
+    public String getCreatedBy() {
+        return this.createdBy;
+    }
+
+    /**
+     * @param createdBy
+     *            the createdBy to set
+     */
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    /**
+     * @return the updatedBy
+     */
+    public String getUpdatedBy() {
+        return this.updatedBy;
+    }
+
+    /**
+     * @param updatedBy
+     *            the updatedBy to set
+     */
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 }

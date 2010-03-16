@@ -120,4 +120,26 @@ public interface BoxFile extends Serializable {
      *            the updated to set
      */
     public void setUpdated(long updated);
+
+    /**
+     * @return the createdBy
+     */
+    public String getCreatedBy();
+
+    /**
+     * @param createdBy
+     *            the createdBy to set
+     */
+    public void setCreatedBy(String createdBy);
+
+    /**
+     * @return the updatedBy
+     */
+    public String getUpdatedBy();
+
+    /**
+     * @param updatedBy
+     *            the updatedBy to set
+     */
+    public void setUpdatedBy(String updatedBy);
 }

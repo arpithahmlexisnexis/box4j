@@ -17,8 +17,7 @@ public class BoxConstant {
     public static final String CONFIG_FILE_DEFAULT_NAME = "box4j-config-default.properties";
 
     /** config parameter. */
-    public static final String CONFIG_HTTPCLIENT_MAXCONNECTIONSPERHOST = 
-        "box4j.config.httpclient.MaxConnectionsPerHost";
+    public static final String CONFIG_HTTPCLIENT_MAXCONNECTIONSPERHOST = "box4j.config.httpclient.MaxConnectionsPerHost";
 
     /** config parameter. */
     public static final String CONFIG_HTTPCLIENT_MAXTOTALCONNECTIONS = "box4j.config.httpclient.MaxTotalConnections";
@@ -216,6 +215,9 @@ public class BoxConstant {
     public static final String PARAM_NAME_FILE_ID = "file_id";
 
     /** parameter name. */
+    public static final String PARAM_NAME_ID = "id";
+
+    /** parameter name. */
     public static final String PARAM_NAME_FILE_NAME = "file_name";
 
     /** parameter name. */
@@ -359,6 +361,18 @@ public class BoxConstant {
     /** parameter name. */
     public static final String PARAM_NAME_UPDATE = "update";
 
+    /** parameter name. */
+    public static final String PARAM_NAME_CREATED_BY = "created_by";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_UPDATED_BY = "updated_by";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_CHECKSUM = "checksum";
+
+    /** parameter name. */
+    public static final String PARAM_NAME_HAS_COLLABORATORS = "has_collaborators";
+
     //
     // soap use
     /** soap element. */
@@ -470,50 +484,48 @@ public class BoxConstant {
 
     /** status code. */
     public static final String STATUS_E_REQUEST_FRIENDS = "e_request_friends";
-    
+
     /** status code. */
     public static final String STATUS_UPLOAD_OK = "upload_ok";
-    
+
     /** status code. */
     public static final String STATUS_GET_ACCOUNT_INFO_OK = "get_account_info_ok";
-    
+
     /** status code. */
     public static final String STATUS_ADD_COMMENT_OK = "add_comment_ok";
-    
+
     /** status code. */
     public static final String STATUS_ADD_COMMENT_ERROR = "add_comment_error";
-    
+
     /** status code. */
     public static final String STATUS_GET_COMMENTS_OK = "get_comments_ok";
-    
+
     /** status code. */
     public static final String STATUS_GET_COMMENTS_ERROR = "get_comments_error";
-    
+
     /** status code. */
     public static final String STATUS_DELETE_COMMENT_OK = "delete_comment_ok";
-    
+
     /** status code. */
     public static final String STATUS_DELETE_COMMENT_ERROR = "delete_comment_error";
-    
+
     /** status code. */
     public static final String STATUS_S_GET_UPDATES = "s_get_updates";
-    
+
     /** status code. */
     public static final String STATUS_E_INVALID_TIMESTAMP = "e_invalid_timestamp";
 
     // 
     // request factory interface key
-    
+
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_ADD_TO_MY_BOX_REQUEST = 
-        "box4j.config.requestfactory.AddToMyBoxRequest";
+    public static final String REQUEST_FACTORY_KEY_ADD_TO_MY_BOX_REQUEST = "box4j.config.requestfactory.AddToMyBoxRequest";
 
     /** request factory key. */
     public static final String REQUEST_FACTORY_KEY_ADD_TO_TAG_REQUEST = "box4j.config.requestfactory.AddToTagRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_CREATE_FOLDER_REQUEST = 
-        "box4j.config.requestfactory.CreateFolderRequest";
+    public static final String REQUEST_FACTORY_KEY_CREATE_FOLDER_REQUEST = "box4j.config.requestfactory.CreateFolderRequest";
 
     /** request factory key. */
     public static final String REQUEST_FACTORY_KEY_DELETE_REQUEST = "box4j.config.requestfactory.DeleteRequest";
@@ -522,24 +534,19 @@ public class BoxConstant {
     public static final String REQUEST_FACTORY_KEY_DOWNLOAD_REQUEST = "box4j.config.requestfactory.DownloadRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_EXPORT_TAGS_REQUEST = 
-        "box4j.config.requestfactory.ExportTagsRequest";
+    public static final String REQUEST_FACTORY_KEY_EXPORT_TAGS_REQUEST = "box4j.config.requestfactory.ExportTagsRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_GET_ACCOUNT_TREE_REQUEST = 
-        "box4j.config.requestfactory.GetAccountTreeRequest";
+    public static final String REQUEST_FACTORY_KEY_GET_ACCOUNT_TREE_REQUEST = "box4j.config.requestfactory.GetAccountTreeRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_GET_AUTH_TOKEN_REQUEST = 
-        "box4j.config.requestfactory.GetAuthTokenRequest";
+    public static final String REQUEST_FACTORY_KEY_GET_AUTH_TOKEN_REQUEST = "box4j.config.requestfactory.GetAuthTokenRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_GET_FILE_INFO_REQUEST = 
-        "box4j.config.requestfactory.GetFileInfoRequest";
+    public static final String REQUEST_FACTORY_KEY_GET_FILE_INFO_REQUEST = "box4j.config.requestfactory.GetFileInfoRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_GET_FRIENDS_REQUEST = 
-        "box4j.config.requestfactory.GetFriendsRequest";
+    public static final String REQUEST_FACTORY_KEY_GET_FRIENDS_REQUEST = "box4j.config.requestfactory.GetFriendsRequest";
 
     /** request factory key. */
     public static final String REQUEST_FACTORY_KEY_GET_TICKET_REQUEST = "box4j.config.requestfactory.GetTicketRequest";
@@ -551,51 +558,41 @@ public class BoxConstant {
     public static final String REQUEST_FACTORY_KEY_MOVE_REQUEST = "box4j.config.requestfactory.MoveRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_PRIVATE_SHARE_REQUEST = 
-        "box4j.config.requestfactory.PrivateShareRequest";
+    public static final String REQUEST_FACTORY_KEY_PRIVATE_SHARE_REQUEST = "box4j.config.requestfactory.PrivateShareRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_PUBLIC_SHARE_REQUEST = 
-        "box4j.config.requestfactory.PublicShareRequest";
+    public static final String REQUEST_FACTORY_KEY_PUBLIC_SHARE_REQUEST = "box4j.config.requestfactory.PublicShareRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_PUBLIC_UNSHARE_REQUEST = 
-        "box4j.config.requestfactory.PublicUnshareRequest";
+    public static final String REQUEST_FACTORY_KEY_PUBLIC_UNSHARE_REQUEST = "box4j.config.requestfactory.PublicUnshareRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_REGISTER_NEW_USER_REQUEST = 
-        "box4j.config.requestfactory.RegisterNewUserRequest";
+    public static final String REQUEST_FACTORY_KEY_REGISTER_NEW_USER_REQUEST = "box4j.config.requestfactory.RegisterNewUserRequest";
 
     /** request factory key. */
     public static final String REQUEST_FACTORY_KEY_RENAME_REQUEST = "box4j.config.requestfactory.RenameRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_REQUEST_FRIENDS_REQUEST = 
-        "box4j.config.requestfactory.RequestFriendsRequest";
+    public static final String REQUEST_FACTORY_KEY_REQUEST_FRIENDS_REQUEST = "box4j.config.requestfactory.RequestFriendsRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_SET_DESCRIPTION_REQUEST = 
-        "box4j.config.requestfactory.SetDescriptionRequest";
+    public static final String REQUEST_FACTORY_KEY_SET_DESCRIPTION_REQUEST = "box4j.config.requestfactory.SetDescriptionRequest";
 
     /** request factory key. */
     public static final String REQUEST_FACTORY_KEY_UPLOAD_REQUEST = "box4j.config.requestfactory.UploadRequest";
 
     /** request factory key. */
-    public static final String REQUEST_FACTORY_KEY_VERIFY_REGISTRATION_EMAIL_REQUEST = 
-        "box4j.config.requestfactory.VerifyRegistrationEmailRequest";
+    public static final String REQUEST_FACTORY_KEY_VERIFY_REGISTRATION_EMAIL_REQUEST = "box4j.config.requestfactory.VerifyRegistrationEmailRequest";
 
     // response factory interface key
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_ADD_TO_MY_BOX_RESPONSE = 
-        "box4j.config.responsefactory.AddToMyBoxResponse";
+    public static final String RESPONSE_FACTORY_KEY_ADD_TO_MY_BOX_RESPONSE = "box4j.config.responsefactory.AddToMyBoxResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_ADD_TO_TAG_RESPONSE = 
-        "box4j.config.responsefactory.AddToTagResponse";
+    public static final String RESPONSE_FACTORY_KEY_ADD_TO_TAG_RESPONSE = "box4j.config.responsefactory.AddToTagResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_CREATE_FOLDER_RESPONSE = 
-        "box4j.config.responsefactory.CreateFolderResponse";
+    public static final String RESPONSE_FACTORY_KEY_CREATE_FOLDER_RESPONSE = "box4j.config.responsefactory.CreateFolderResponse";
 
     /** response factory key. */
     public static final String RESPONSE_FACTORY_KEY_DELETE_RESPONSE = "box4j.config.responsefactory.DeleteResponse";
@@ -604,28 +601,22 @@ public class BoxConstant {
     public static final String RESPONSE_FACTORY_KEY_DOWNLOAD_RESPONSE = "box4j.config.responsefactory.DownloadResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_EXPORT_TAGS_RESPONSE = 
-        "box4j.config.responsefactory.ExportTagsResponse";
+    public static final String RESPONSE_FACTORY_KEY_EXPORT_TAGS_RESPONSE = "box4j.config.responsefactory.ExportTagsResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_GET_ACCOUNT_TREE_RESPONSE = 
-        "box4j.config.responsefactory.GetAccountTreeResponse";
+    public static final String RESPONSE_FACTORY_KEY_GET_ACCOUNT_TREE_RESPONSE = "box4j.config.responsefactory.GetAccountTreeResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_GET_AUTH_TOKEN_RESPONSE = 
-        "box4j.config.responsefactory.GetAuthTokenResponse";
+    public static final String RESPONSE_FACTORY_KEY_GET_AUTH_TOKEN_RESPONSE = "box4j.config.responsefactory.GetAuthTokenResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_GET_FILE_INFO_RESPONSE = 
-        "box4j.config.responsefactory.GetFileInfoResponse";
+    public static final String RESPONSE_FACTORY_KEY_GET_FILE_INFO_RESPONSE = "box4j.config.responsefactory.GetFileInfoResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_GET_FRIENDS_RESPONSE = 
-        "box4j.config.responsefactory.GetFriendsResponse";
+    public static final String RESPONSE_FACTORY_KEY_GET_FRIENDS_RESPONSE = "box4j.config.responsefactory.GetFriendsResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_GET_TICKET_RESPONSE = 
-        "box4j.config.responsefactory.GetTicketResponse";
+    public static final String RESPONSE_FACTORY_KEY_GET_TICKET_RESPONSE = "box4j.config.responsefactory.GetTicketResponse";
 
     /** response factory key. */
     public static final String RESPONSE_FACTORY_KEY_LOGOUT_RESPONSE = "box4j.config.responsefactory.LogoutResponse";
@@ -634,36 +625,29 @@ public class BoxConstant {
     public static final String RESPONSE_FACTORY_KEY_MOVE_RESPONSE = "box4j.config.responsefactory.MoveResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_PRIVATE_SHARE_RESPONSE = 
-        "box4j.config.responsefactory.PrivateShareResponse";
+    public static final String RESPONSE_FACTORY_KEY_PRIVATE_SHARE_RESPONSE = "box4j.config.responsefactory.PrivateShareResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_PUBLIC_SHARE_RESPONSE = 
-        "box4j.config.responsefactory.PublicShareResponse";
+    public static final String RESPONSE_FACTORY_KEY_PUBLIC_SHARE_RESPONSE = "box4j.config.responsefactory.PublicShareResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_PUBLIC_UNSHARE_RESPONSE = 
-        "box4j.config.responsefactory.PublicUnshareResponse";
+    public static final String RESPONSE_FACTORY_KEY_PUBLIC_UNSHARE_RESPONSE = "box4j.config.responsefactory.PublicUnshareResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_REGISTER_NEW_USER_RESPONSE = 
-        "box4j.config.responsefactory.RegisterNewUserResponse";
+    public static final String RESPONSE_FACTORY_KEY_REGISTER_NEW_USER_RESPONSE = "box4j.config.responsefactory.RegisterNewUserResponse";
 
     /** response factory key. */
     public static final String RESPONSE_FACTORY_KEY_RENAME_RESPONSE = "box4j.config.responsefactory.RenameResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_REQUEST_FRIENDS_RESPONSE = 
-        "box4j.config.responsefactory.RequestFriendsResponse";
+    public static final String RESPONSE_FACTORY_KEY_REQUEST_FRIENDS_RESPONSE = "box4j.config.responsefactory.RequestFriendsResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_SET_DESCRIPTION_RESPONSE = 
-        "box4j.config.responsefactory.SetDescriptionResponse";
+    public static final String RESPONSE_FACTORY_KEY_SET_DESCRIPTION_RESPONSE = "box4j.config.responsefactory.SetDescriptionResponse";
 
     /** response factory key. */
     public static final String RESPONSE_FACTORY_KEY_UPLOAD_RESPONSE = "box4j.config.responsefactory.UploadResponse";
 
     /** response factory key. */
-    public static final String RESPONSE_FACTORY_KEY_VERIFY_REGISTRATION_EMAIL_RESPONSE = 
-        "box4j.config.responsefactory.VerifyRegistrationEmailResponse";
+    public static final String RESPONSE_FACTORY_KEY_VERIFY_REGISTRATION_EMAIL_RESPONSE = "box4j.config.responsefactory.VerifyRegistrationEmailResponse";
 }

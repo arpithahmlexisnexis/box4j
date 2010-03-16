@@ -46,6 +46,12 @@ public class BoxFolderImpl implements BoxFolder {
     /** password to access this folder. */
     private String password;
 
+    /** checksum. */
+    private String checksum;
+
+    /** if have collaborators. */
+    private String hasCollaborators;
+
     /**
      * @return the folderId
      */
@@ -194,5 +200,35 @@ public class BoxFolderImpl implements BoxFolder {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the checksum
+     */
+    public String getChecksum() {
+        return this.checksum;
+    }
+
+    /**
+     * @param checksum
+     *            the checksum to set
+     */
+    public void setChecksum(String checksum) {
+        this.checksum = checksum;
+    }
+
+    /**
+     * @return the hasCollaborators
+     */
+    public String getHasCollaborators() {
+        return this.hasCollaborators;
+    }
+
+    /**
+     * @param hasCollaborators
+     *            the hasCollaborators to set
+     */
+    public void setHasCollaborators(String hasCollaborators) {
+        this.hasCollaborators = hasCollaborators;
     }
 }

@@ -120,4 +120,26 @@ public interface BoxFolder extends Serializable {
      *            the password to set
      */
     public void setPassword(String password);
+
+    /**
+     * @return the checksum
+     */
+    public String getChecksum();
+
+    /**
+     * @param checksum
+     *            the checksum to set
+     */
+    public void setChecksum(String checksum);
+
+    /**
+     * @return the hasCollaborators
+     */
+    public String getHasCollaborators();
+
+    /**
+     * @param hasCollaborators
+     *            the hasCollaborators to set
+     */
+    public void setHasCollaborators(String hasCollaborators);
 }

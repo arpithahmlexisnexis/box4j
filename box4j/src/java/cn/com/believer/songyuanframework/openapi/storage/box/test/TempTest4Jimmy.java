@@ -21,6 +21,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTo
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.SimpleBoxImpl;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.core.BoxHTTPManager;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxException;
@@ -45,16 +47,23 @@ public class TempTest4Jimmy {
         GetAuthTokenResponse getAuthTokenResponse;
         GetAuthTokenRequest getAuthTokenRequest;
         getAuthTokenResponse = simAuthentication("paranoid945@gmail.com", "6343011", apiKey);
-
+        String authToken = getAuthTokenResponse.getAuthToken();
 
         GetAccountTreeResponse getAccountTreeResponse;
         GetAccountTreeRequest getAccountTreeRequest;
         String[] gatActTreeParams = { "nozip" };
-        getAccountTreeRequest = BoxRequestFactory.createGetAccountTreeRequest(apiKey, getAuthTokenResponse
-                .getAuthToken(), "0", gatActTreeParams);
+        getAccountTreeRequest = BoxRequestFactory.createGetAccountTreeRequest(apiKey, authToken, "0", gatActTreeParams);
+
+        // get account tree
         getAccountTreeResponse = boxExternalAPI.getAccountTree(getAccountTreeRequest);
 
-        //
+        // get updates
+        GetUpdatesResponse getUpdatesResponse;
+        GetUpdatesRequest getUpdatesRequest;
+
+        getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, authToken, "0", String.valueOf(System
+                .currentTimeMillis()), new String[] { "nozip" });
+        getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
         System.out.println();
     }
 

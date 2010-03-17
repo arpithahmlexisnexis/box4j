@@ -23,6 +23,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicket
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.SimpleBoxImpl;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.core.BoxHTTPManager;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxException;
@@ -64,6 +66,13 @@ public class TempTest4Jimmy {
         getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, authToken, "0", String.valueOf(System
                 .currentTimeMillis()), new String[] { "nozip" });
         getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
+
+        // search
+        SearchResponse searchResponse;
+        SearchRequest searchRequest;
+        searchRequest = BoxRequestFactory.createSearchRequest(apiKey, authToken, "linux", 1, 10, "relevance", "asc",
+                new String[] { "show_description", "show_path" });
+        searchResponse = boxExternalAPI.search(searchRequest);
         System.out.println();
     }
 

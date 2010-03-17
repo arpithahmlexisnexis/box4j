@@ -57,7 +57,7 @@ public class TempTest4Jimmy {
         getAccountTreeRequest = BoxRequestFactory.createGetAccountTreeRequest(apiKey, authToken, "0", gatActTreeParams);
 
         // get account tree
-        getAccountTreeResponse = boxExternalAPI.getAccountTree(getAccountTreeRequest);
+//        getAccountTreeResponse = boxExternalAPI.getAccountTree(getAccountTreeRequest);
 
         // get updates
         GetUpdatesResponse getUpdatesResponse;

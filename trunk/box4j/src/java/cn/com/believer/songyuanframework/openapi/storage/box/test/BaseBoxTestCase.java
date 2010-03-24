@@ -236,7 +236,7 @@ public class BaseBoxTestCase extends TestCase {
             assertEquals(BoxConstant.STATUS_SUCCESSFUL_REGISTER, registerNewUserResponse.getStatus());
             assertEquals(registerNewUserResponse.getUser().getEmail(), correctEmail);
 
-            /** authentication(login) */
+            /** authentication(login) TODO standard OAuthy login */
             GetAuthTokenResponse getAuthTokenResponse;
 
             // wrong API key
@@ -327,14 +327,10 @@ public class BaseBoxTestCase extends TestCase {
             assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_ERROR, addToMyBoxResponse.getStatus());
 
             // wrong folder id
-            // addToMyBoxRequest =
-            // BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken,
-            // "f_135700509",
-            // "3qk29e88pf", incorrectId, normalTags);
-            // addToMyBoxResponse =
-            // boxExternalAPI.addToMyBox(addToMyBoxRequest);
-            // assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_ERROR,
-            // addToMyBoxResponse.getStatus());
+            addToMyBoxRequest = BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken, "f_135700509",
+                    "3qk29e88pf", incorrectId, normalTags);
+            addToMyBoxResponse = boxExternalAPI.addToMyBox(addToMyBoxRequest);
+            assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_ERROR, addToMyBoxResponse.getStatus());
 
             // special character tags
             addToMyBoxRequest = BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken, "f_135700509",
@@ -346,9 +342,7 @@ public class BaseBoxTestCase extends TestCase {
             addToMyBoxRequest = BoxRequestFactory.createAddToMyBoxRequest(apiKey, authToken, "212293376", "0zxx7odf1n",
                     "0", normalTags);
             addToMyBoxResponse = boxExternalAPI.addToMyBox(addToMyBoxRequest);
-            // TODO bugs? not working at all
-            // assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_OK,
-            // addToMyBoxResponse.getStatus());
+            assertEquals(BoxConstant.STATUS_ADD_TO_MY_BOX_OK, addToMyBoxResponse.getStatus());
 
             /** request_friends */
             RequestFriendsResponse requestFriendsResponse;
@@ -403,16 +397,12 @@ public class BaseBoxTestCase extends TestCase {
             assertNull(getFriendsResponse.getEncodedFriends());
             assertTrue(getFriendsResponse.getFriendList().size() > 0);
 
-            // TODO, it's a bug, return nothing from server.
             // normal condition, zip with base64 encoded string
-            // getFriendsRequest = BoxRequestFactory.createGetFriendsRequest(
-            // apiKey, authToken, null);
-            // getFriendsResponse =
-            // boxExternalAPI.getFriends(getFriendsRequest);
-            // assertEquals(BoxConstant.STATUS_S_GET_FRIENDS, getFriendsResponse
-            // .getStatus());
-            // assertNotNull(getFriendsResponse.getEncodedFriends());
-            // assertTrue(getFriendsResponse.getEncodedFriends().length() > 0);
+            getFriendsRequest = BoxRequestFactory.createGetFriendsRequest(apiKey, authToken, null);
+            getFriendsResponse = boxExternalAPI.getFriends(getFriendsRequest);
+            assertEquals(BoxConstant.STATUS_S_GET_FRIENDS, getFriendsResponse.getStatus());
+            assertNotNull(getFriendsResponse.getEncodedFriends());
+            assertTrue(getFriendsResponse.getEncodedFriends().length() > 0);
 
             /** create a folder */
             CreateFolderResponse createFolderResponse;
@@ -437,13 +427,10 @@ public class BaseBoxTestCase extends TestCase {
             assertEquals(BoxConstant.STATUS_NO_PARENT, createFolderResponse.getStatus());
 
             // special character folder name
-            // createFolderRequest =
-            // BoxRequestFactory.createCreateFolderRequest(
-            // apiKey, authToken, "0", specialCharName, true);
-            // createFolderResponse = boxExternalAPI
-            // .createFolder(createFolderRequest);
-            // assertEquals(specialCharName, createFolderResponse.getFolder()
-            // .getFolderName());
+            createFolderRequest = BoxRequestFactory.createCreateFolderRequest(apiKey, authToken, "0", specialCharName,
+                    true);
+            createFolderResponse = boxExternalAPI.createFolder(createFolderRequest);
+            assertEquals(specialCharName, createFolderResponse.getFolder().getFolderName());
 
             // normal create folder
             createFolderRequest = BoxRequestFactory.createCreateFolderRequest(apiKey, authToken, "0", firstFolderName,
@@ -690,7 +677,6 @@ public class BaseBoxTestCase extends TestCase {
             assertEquals(BoxConstant.STATUS_SHARE_OK, publicShareResponse.getStatus());
             getFileInfoRequest = BoxRequestFactory.createGetFileInfoRequest(apiKey, authToken, rootFile1Id);
             getFileInfoResponse = boxExternalAPI.getFileInfo(getFileInfoRequest);
-            // TODO, bug, XML version public_share not working...
             assertTrue(getFileInfoResponse.getFile().isShared());
 
             /** public unshare */
@@ -800,18 +786,20 @@ public class BaseBoxTestCase extends TestCase {
             }
             assertTrue(haveComment);
             assertEquals(2, getCommentsResponse.getComments().size());
-            
+
             /** get comments */
             // wrong api key
-            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(incorrectApiKey, authToken, "file", rootFile1Id);
+            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(incorrectApiKey, authToken, "file",
+                    rootFile1Id);
             getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
             assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, getCommentsResponse.getStatus());
-            
+
             // wrong auth token
-            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, incorrectAuthToken, "file", rootFile1Id);
+            getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, incorrectAuthToken, "file",
+                    rootFile1Id);
             getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
             assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getCommentsResponse.getStatus());
-            
+
             // wrong file id
             getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, authToken, "file", incorrectId);
             getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
@@ -820,27 +808,30 @@ public class BaseBoxTestCase extends TestCase {
             /** delete comment */
             DeleteCommentRequest deleteCommentRequest;
             DeleteCommentResponse deleteCommentResponse;
-            
+
             // wrong api key
-            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(incorrectApiKey, authToken, addCommentResponse.getComment().getCommentId());
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(incorrectApiKey, authToken,
+                    addCommentResponse.getComment().getCommentId());
             deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
             assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, deleteCommentResponse.getStatus());
-            
+
             // wrong auth token
-            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, incorrectAuthToken, addCommentResponse.getComment().getCommentId());
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, incorrectAuthToken,
+                    addCommentResponse.getComment().getCommentId());
             deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
             assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, deleteCommentResponse.getStatus());
-            
+
             // wrong comment id
             deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, authToken, incorrectId);
             deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
             assertEquals(BoxConstant.STATUS_DELETE_COMMENT_ERROR, deleteCommentResponse.getStatus());
-            
+
             // delete comment2 successfully
-            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, authToken, addCommentResponse.getComment().getCommentId());
+            deleteCommentRequest = BoxRequestFactory.createDeleteCommentRequest(apiKey, authToken, addCommentResponse
+                    .getComment().getCommentId());
             deleteCommentResponse = boxExternalAPI.deleteComment(deleteCommentRequest);
             assertEquals(BoxConstant.STATUS_DELETE_COMMENT_OK, deleteCommentResponse.getStatus());
-            
+
             boolean fileExists = false;
             getCommentsRequest = BoxRequestFactory.createGetCommentsRequest(apiKey, authToken, "file", rootFile1Id);
             getCommentsResponse = boxExternalAPI.getComments(getCommentsRequest);
@@ -856,24 +847,25 @@ public class BaseBoxTestCase extends TestCase {
             /** get updates */
             GetUpdatesResponse getUpdatesResponse;
             GetUpdatesRequest getUpdatesRequest;
-            
-            String[] getUpdatesParams = {"nozip"};
-            
+
+            String[] getUpdatesParams = { "nozip" };
+
             // wrong api key
-            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(incorrectApiKey, authToken, "0", "0", getUpdatesParams);
+            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(incorrectApiKey, authToken, "0", "0",
+                    getUpdatesParams);
             getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
             assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, getUpdatesResponse.getStatus());
 
             // wrong auth token
-            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, incorrectAuthToken, "0", "0", getUpdatesParams);
+            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, incorrectAuthToken, "0", "0",
+                    getUpdatesParams);
             getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
             assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getUpdatesResponse.getStatus());
-            
-            // get updates
-            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, authToken, "0", String.valueOf(System.currentTimeMillis()), getUpdatesParams);
-            getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
 
-            
+            // get updates
+            getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, authToken, "0", String.valueOf(System
+                    .currentTimeMillis()), getUpdatesParams);
+            getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
 
             /** add to tag */
             AddToTagResponse addToTagResponse;

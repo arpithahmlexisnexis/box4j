@@ -915,8 +915,7 @@ public class BaseBoxTestCase extends TestCase {
             assertEquals(BoxConstant.STATUS_EXPORT_TAGS_OK, exportTagsResponse.getStatus());
 
             assertTrue(exportTagsResponse.getTagList().size() > 0);
-            // TODO, bug, not a base64 encoded XML
-            // assertNotNull(exportTagsResponse.getEncodedTags());
+            assertNotNull(exportTagsResponse.getEncodedTags());
 
             /** move */
             MoveResponse moveResponse;

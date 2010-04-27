@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cn.com.believer.songyuanframework.openapi.storage.box.test;
+package cn.com.believer.songyuanframework.openapi.storage.box.test.tmp;
 
 import java.io.IOException;
 import java.util.Properties;

@@ -103,6 +103,7 @@
                 <include name="**/*.xml" />
                 <include name="**/*.xslt" />
                 <include name="**/box4j-config-default.properties" />
+                <exclude name="**/cn/com/believer/songyuanframework/openapi/storage/box/test/TempTest4Jimmy.java" />
             </fileset>
         </copy>
     </target>
@@ -120,7 +121,7 @@
     <!-- =================================================================== -->
     <target name="package" depends="compile">
         <jar jarfile="${build.dir}/${name}-${version}.jar" basedir="${build.dest}" includes="cn/com/believer/songyuanframework/openapi/storage/box/**" excludes="cn/com/believer/songyuanframework/openapi/storage/box/test/**,cn/com/believer/songyuanframework/openapi/storage/box/examples/**" />
-        <jar jarfile="${build.dir}/${name}-${version}-src.zip" basedir="${build.src}" includes="cn/com/believer/songyuanframework/openapi/storage/box/**">
+        <jar jarfile="${build.dir}/${name}-${version}-src.zip" basedir="${build.src}" includes="cn/com/believer/songyuanframework/openapi/storage/box/**" excludes="cn/com/believer/songyuanframework/openapi/storage/box/test/tmp/**">
             <include />
         </jar>
     </target>

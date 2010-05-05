@@ -70,7 +70,7 @@ public class TempTest4Jimmy {
         // search
         SearchResponse searchResponse;
         SearchRequest searchRequest;
-        searchRequest = BoxRequestFactory.createSearchRequest(apiKey, authToken, "linux", 1, 10, "relevance", "asc",
+        searchRequest = BoxRequestFactory.createSearchRequest(apiKey, authToken, "java", 1, 10, "relevance", "asc",
                 new String[] { "show_description", "show_path" });
         searchResponse = boxExternalAPI.search(searchRequest);
         System.out.println();

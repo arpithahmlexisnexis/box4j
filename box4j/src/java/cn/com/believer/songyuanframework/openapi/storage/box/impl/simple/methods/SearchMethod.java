@@ -4,10 +4,8 @@
 package cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -15,11 +13,12 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstant;
+import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxObjectFactory;
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxResponseFactory;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchResponse;
-import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.utils.ConverterUtils;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxException;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxFile;
 
 /**
  * @author jjia
@@ -29,7 +28,12 @@ public class SearchMethod extends BaseBoxMethod {
 
     /**
      * @param searchRequest
-     * @return
+     *            search request
+     * @return search response
+     * @throws IOException
+     *             io exception
+     * @throws BoxException
+     *             box exception
      */
     public SearchResponse search(SearchRequest searchRequest) throws IOException, BoxException {
         SearchResponse searchResponse = BoxResponseFactory.createSearchResponse();
@@ -57,10 +61,11 @@ public class SearchMethod extends BaseBoxMethod {
                 Document doc = httpManager.doGet(urlBuff.toString());
                 Element responseElm = doc.getRootElement();
                 Element statusElm = responseElm.element(BoxConstant.PARAM_NAME_STATUS);
+                Element filesElm = responseElm.element(BoxConstant.PARAM_NAME_FILES);
                 String status = statusElm.getText();
                 searchResponse.setStatus(status);
-
-                // xxxxxxxxxx
+                List fileList = parseToFileList(filesElm);
+                searchResponse.setFileList(fileList);
             } catch (DocumentException e) {
                 BoxException be = new BoxException("failed to parse to a document.", e);
                 be.setStatus(searchResponse.getStatus());
@@ -98,7 +103,7 @@ public class SearchMethod extends BaseBoxMethod {
             perPageElm.setText(String.valueOf(perPage));
             sortElm.setText(sort);
             directionElm.setText(direction);
-            if (params != null){
+            if (params != null) {
                 for (int i = 0; i < params.length; i++) {
                     String param = params[i];
                     Element itemElm = DocumentHelper.createElement(BoxConstant.PARAM_NAME_ITEM);
@@ -111,8 +116,12 @@ public class SearchMethod extends BaseBoxMethod {
                 Document doc = DocumentHelper.parseText(result);
                 Element responseElm = doc.getRootElement();
                 Element statusElm = responseElm.element(BoxConstant.PARAM_NAME_STATUS);
+                Element filesElm = responseElm.element(BoxConstant.PARAM_NAME_FILES);
                 String status = statusElm.getText();
                 searchResponse.setStatus(status);
+                searchResponse.setStatus(status);
+                List fileList = parseToFileList(filesElm);
+                searchResponse.setFileList(fileList);
             } catch (DocumentException e) {
                 BoxException be = new BoxException("failed to parse to a document.", e);
                 be.setStatus(searchResponse.getStatus());
@@ -125,6 +134,27 @@ public class SearchMethod extends BaseBoxMethod {
         }
 
         return searchResponse;
+    }
+
+    /**
+     * @param filesElm
+     *            files element
+     * @return list of file
+     */
+    private List parseToFileList(Element filesElm) {
+        List fileList = new ArrayList();
+        for (int i = 0; i < filesElm.nodeCount(); i++) {
+            Element fileElm = (Element) filesElm.node(i);
+            Element idElm = fileElm.element(BoxConstant.PARAM_NAME_ID);
+            Element nameElm = fileElm.element(BoxConstant.PARAM_NAME_NAME);
+            String id = idElm.getText();
+            String name = nameElm.getText();
+            BoxFile file = BoxObjectFactory.createBoxFile();
+            file.setFileId(id);
+            file.setFileName(name);
+            fileList.add(file);
+        }
+        return fileList;
     }
 
 }

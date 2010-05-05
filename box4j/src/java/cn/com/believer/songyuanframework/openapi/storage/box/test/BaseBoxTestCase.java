@@ -3,8 +3,10 @@
  */
 package cn.com.believer.songyuanframework.openapi.storage.box.test;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -236,30 +238,40 @@ public class BaseBoxTestCase extends TestCase {
             assertEquals(BoxConstant.STATUS_SUCCESSFUL_REGISTER, registerNewUserResponse.getStatus());
             assertEquals(registerNewUserResponse.getUser().getEmail(), correctEmail);
 
-            /** authentication(login) TODO standard OAuthy login */
+            /** authentication(login) standard OAuthy login */
             GetAuthTokenResponse getAuthTokenResponse;
-
-            // wrong API key
-            getAuthTokenResponse = simAuthentication(correctEmail, loginPassword, incorrectApiKey);
-            assertEquals(BoxConstant.STATUS_APPLICATION_RESTRICTED, getAuthTokenResponse.getStatus());
-
-            // wrong email format
-            getAuthTokenResponse = simAuthentication(incorrectEmail, loginPassword, apiKey);
-            assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getAuthTokenResponse.getStatus());
-
-            // wrong password
-            getAuthTokenResponse = simAuthentication(correctEmail, incorrectPassword, apiKey);
-            assertEquals(BoxConstant.STATUS_NOT_LOGGED_IN, getAuthTokenResponse.getStatus());
-
+            
+            // get a ticket by API key. 
+            getTicketRequest = BoxRequestFactory.createGetTicketRequest(apiKey); 
+            getTicketResponse = boxExternalAPI.getTicket(getTicketRequest); 
+ 
+            // after you get the ticket, you need to navigate to the URL 
+            // http://www.box.net/api/1.0/auth/<ticket> to enter the user name and password to authenticate. 
+            System.out.println(">>>>>>>>>>> Your ticket is " + getTicketResponse.getTicket()); 
+            System.out.println(">>>>>>>>>>> created user name is: " + correctEmail + " and created password is: " + loginPassword); 
+            System.out.println(">>>>>>>>>>> please authenticate from this URL: http://www.box.net/api/1.0/auth/" + getTicketResponse.getTicket());
+            System.out.println(">>>>>>>>>>> press any key after you are authenticated from box.net page."); 
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
+            try { 
+                String temp = br.readLine(); 
+            } catch (IOException e) { 
+                e.printStackTrace(); 
+            } 
+ 
+            GetAuthTokenRequest getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(apiKey, 
+                    getTicketResponse.getTicket()); 
+            getAuthTokenResponse = boxExternalAPI.getAuthToken(getAuthTokenRequest); 
+ 
+            if (BoxConstant.STATUS_NOT_LOGGED_IN.equals(getAuthTokenResponse.getStatus())) { 
+                return; 
+            } 
+            String authToken = getAuthTokenResponse.getAuthToken(); 
             // login OK
-            getAuthTokenResponse = simAuthentication(correctEmail, loginPassword, apiKey);
             assertEquals(BoxConstant.STATUS_GET_AUTH_TOKEN_OK, getAuthTokenResponse.getStatus());
             assertNotNull(getAuthTokenResponse.getUser());
             assertEquals(correctEmail, getAuthTokenResponse.getUser().getEmail());
-            String authToken = getAuthTokenResponse.getAuthToken();
 
             /** get_auth_token. */
-            GetAuthTokenRequest getAuthTokenRequest;
 
             // wrong API key
             getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(incorrectApiKey, correctTicket);
@@ -1067,66 +1079,6 @@ public class BaseBoxTestCase extends TestCase {
         } catch (BoxException e) {
             e.printStackTrace();
             fail(e.getMessage());
-        }
-    }
-
-    /**
-     * This method is used to simulate authorization process.
-     * 
-     * @param boxUName
-     *            login name
-     * @param boxPWord
-     *            login password
-     * @param apiKey
-     *            api key
-     * @return response
-     * @throws IOException
-     *             IO exception
-     * @throws BoxException
-     *             box exception
-     */
-    private GetAuthTokenResponse simAuthentication(String boxUName, String boxPWord, String apiKey) throws IOException,
-            BoxException {
-        GetTicketRequest getTicketRequest = BoxRequestFactory.createGetTicketRequest(apiKey);
-        GetTicketResponse getTicketResponse = boxExternalAPI.getTicket(getTicketRequest);
-        correctTicket = getTicketResponse.getTicket();
-        if (!BoxConstant.STATUS_GET_TICKET_OK.equals(getTicketResponse.getStatus())) {
-            GetAuthTokenResponse getAuthTokenResponse = BoxResponseFactory.createGetAuthTokenResponse();
-            getAuthTokenResponse.setStatus(getTicketResponse.getStatus());
-            return getAuthTokenResponse;
-        } else {
-            Properties config = BoxHTTPManager.getBoxHTTPManager().getConfig();
-            String apiUrlPrefix = config.getProperty(BoxConstant.CONFIG_API_URL_PREFIX);
-            String apiVersion = config.getProperty(BoxConstant.CONFIG_API_VERSION);
-
-            // first redirect that page
-            HttpClient hc = new HttpClient();
-
-            StringBuffer urlBuff = new StringBuffer();
-            urlBuff.append(apiUrlPrefix);
-            urlBuff.append(BoxConstant.SLASH_STRING);
-            urlBuff.append(apiVersion);
-            urlBuff.append(BoxConstant.SLASH_STRING);
-            urlBuff.append(BoxConstant.AUTH_URL_STRING);
-            urlBuff.append(BoxConstant.SLASH_STRING);
-            urlBuff.append(getTicketResponse.getTicket());
-            GetMethod gMethod = new GetMethod(urlBuff.toString());
-            hc.executeMethod(gMethod);
-
-            // login use username/password
-            PostMethod pMethod = new PostMethod(urlBuff.toString());
-
-            NameValuePair unamePair = new NameValuePair("login", boxUName);
-            NameValuePair pwordPair = new NameValuePair("password", boxPWord);
-            NameValuePair dologinPair = new NameValuePair("dologin", "1");
-            pMethod.setRequestBody(new NameValuePair[] { unamePair, pwordPair, dologinPair });
-            pMethod.addRequestHeader("Referer", urlBuff.toString());
-            hc.executeMethod(pMethod);
-
-            GetAuthTokenRequest getAuthTokenRequest = BoxRequestFactory.createGetAuthTokenRequest(apiKey,
-                    getTicketResponse.getTicket());
-            GetAuthTokenResponse getAuthTokenResponse = boxExternalAPI.getAuthToken(getAuthTokenRequest);
-            return getAuthTokenResponse;
         }
     }
 }

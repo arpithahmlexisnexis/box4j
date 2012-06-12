@@ -12,11 +12,6 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.UploadResul
  */
 public class UploadResultImpl implements UploadResult {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -7726994152747708444L;
-
     /** the box file object. */
     private BoxFile file;
 

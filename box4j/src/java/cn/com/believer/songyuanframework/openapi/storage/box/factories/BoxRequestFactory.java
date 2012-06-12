@@ -8,23 +8,18 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToTagRequest;
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.CopyRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.CreateFolderRequest;
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteCommentRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DeleteRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.DownloadRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.ExportTagsRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountInfoRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAccountTreeRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetAuthTokenRequest;
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetCommentsRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFileInfoRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetFriendsRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicketRequest;
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PrivateShareRequest;
@@ -33,7 +28,6 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicUns
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RegisterNewUserRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RenameRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.RequestFriendsRequest;
-import cn.com.believer.songyuanframework.openapi.storage.box.functions.SearchRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.SetDescriptionRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.UploadRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailRequest;
@@ -436,16 +430,6 @@ public class BoxRequestFactory extends BaseBoxFactory {
     /**
      * create request object.
      * 
-     * @return request object
-     */
-    public static CopyRequest createCopyRequest() {
-        Object obj = newInstanceOf("box4j.config.requestfactory.CopyRequest");
-        return (CopyRequest) obj;
-    }
-
-    /**
-     * create request object.
-     * 
      * @param apiKey
      *            API key
      * @param authToken
@@ -468,33 +452,6 @@ public class BoxRequestFactory extends BaseBoxFactory {
         moveRequest.setTargetId(targetId);
         moveRequest.setDestinationId(destinationId);
         return moveRequest;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @param apiKey
-     *            API key
-     * @param authToken
-     *            auth token
-     * @param target
-     *            target
-     * @param targetId
-     *            target id
-     * @param destinationId
-     *            destination id
-     * 
-     * @return request object
-     */
-    public static CopyRequest createCopyRequest(String apiKey, String authToken, String target, String targetId,
-            String destinationId) {
-        CopyRequest copyRequest = createCopyRequest();
-        copyRequest.setApiKey(apiKey);
-        copyRequest.setAuthToken(authToken);
-        copyRequest.setTarget(target);
-        copyRequest.setTargetId(targetId);
-        copyRequest.setDestinationId(destinationId);
-        return copyRequest;
     }
 
     /**
@@ -834,185 +791,6 @@ public class BoxRequestFactory extends BaseBoxFactory {
         getAccountInfoRequest.setApiKey(apiKey);
         getAccountInfoRequest.setAuthToken(authToken);
         return getAccountInfoRequest;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @return request object
-     */
-    public static GetCommentsRequest createGetCommentsRequest() {
-        Object obj = newInstanceOf("box4j.config.requestfactory.GetCommentsRequest");
-        return (GetCommentsRequest) obj;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @param apiKey
-     *            API key
-     * @param authToken
-     *            authentication token
-     * @param target
-     *            file or folder
-     * @param targetId
-     *            file id or folder id
-     * @return request object
-     */
-    public static GetCommentsRequest createGetCommentsRequest(String apiKey, String authToken, String target,
-            String targetId) {
-        GetCommentsRequest getCommentsRequest = createGetCommentsRequest();
-        getCommentsRequest.setApiKey(apiKey);
-        getCommentsRequest.setAuthToken(authToken);
-        getCommentsRequest.setTarget(target);
-        getCommentsRequest.setTargetId(targetId);
-        return getCommentsRequest;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @return request object
-     */
-    public static AddCommentRequest createAddCommentRequest() {
-        Object obj = newInstanceOf("box4j.config.requestfactory.AddCommentRequest");
-        return (AddCommentRequest) obj;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @param apiKey
-     *            API key
-     * @param authToken
-     *            authentication token
-     * @param target
-     *            file or folder
-     * @param targetId
-     *            file id or folder id
-     * @param message
-     *            comment to be attached to file or folder
-     * @return request object
-     */
-    public static AddCommentRequest createAddCommentRequest(String apiKey, String authToken, String target,
-            String targetId, String message) {
-        AddCommentRequest addCommentRequest = createAddCommentRequest();
-        addCommentRequest.setApiKey(apiKey);
-        addCommentRequest.setAuthToken(authToken);
-        addCommentRequest.setTarget(target);
-        addCommentRequest.setTargetId(targetId);
-        addCommentRequest.setMessage(message);
-        return addCommentRequest;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @return request object
-     */
-    public static DeleteCommentRequest createDeleteCommentRequest() {
-        Object obj = newInstanceOf("box4j.config.requestfactory.DeleteCommentRequest");
-        return (DeleteCommentRequest) obj;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @param apiKey
-     *            API key
-     * @param authToken
-     *            authentication token
-     * @param targetId
-     *            file or folder id
-     * @return request object
-     */
-    public static DeleteCommentRequest createDeleteCommentRequest(String apiKey, String authToken, String targetId) {
-        DeleteCommentRequest deleteCommentRequest = createDeleteCommentRequest();
-        deleteCommentRequest.setApiKey(apiKey);
-        deleteCommentRequest.setAuthToken(authToken);
-        deleteCommentRequest.setTargetId(targetId);
-        return deleteCommentRequest;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @return request object
-     */
-    public static SearchRequest createSearchRequest() {
-        Object obj = newInstanceOf("box4j.config.requestfactory.SearchRequest");
-        return (SearchRequest) obj;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @param apiKey
-     *            API key
-     * @param authToken
-     *            authentication token
-     * @param query
-     *            query string
-     * @param page
-     *            page number
-     * @param perPage
-     *            item number per page
-     * @param sort
-     *            sort type
-     * @param direction
-     *            asc or dsc
-     * @param params
-     *            parameters
-     * @return request object
-     */
-    public static SearchRequest createSearchRequest(String apiKey, String authToken, String query, long page,
-            long perPage, String sort, String direction, String[] params) {
-        SearchRequest searchRequest = createSearchRequest();
-        searchRequest.setApiKey(apiKey);
-        searchRequest.setAuthToken(authToken);
-        searchRequest.setQuery(query);
-        searchRequest.setPage(page);
-        searchRequest.setPerPage(perPage);
-        searchRequest.setSort(sort);
-        searchRequest.setDirection(direction);
-        searchRequest.setParams(params);
-        return searchRequest;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @return request object
-     */
-    public static GetUpdatesRequest createGetUpdatesRequest() {
-        Object obj = newInstanceOf("box4j.config.requestfactory.GetUpdatesRequest");
-        return (GetUpdatesRequest) obj;
-    }
-
-    /**
-     * create request object.
-     * 
-     * @param apiKey
-     *            API key
-     * @param authToken
-     *            authentication token
-     * @param beginTimestamp
-     *            begin timestamp
-     * @param endTimestamp
-     *            end timestamp
-     * @param params
-     *            parameters
-     * @return request object
-     */
-    public static GetUpdatesRequest createGetUpdatesRequest(String apiKey, String authToken, String beginTimestamp,
-            String endTimestamp, String[] params) {
-        GetUpdatesRequest getUpdatesRequest = createGetUpdatesRequest();
-        getUpdatesRequest.setApiKey(apiKey);
-        getUpdatesRequest.setAuthToken(authToken);
-        getUpdatesRequest.setBeginTimestamp(beginTimestamp);
-        getUpdatesRequest.setEndTimestamp(endTimestamp);
-        getUpdatesRequest.setParams(params);
-        return getUpdatesRequest;
     }
 
 }

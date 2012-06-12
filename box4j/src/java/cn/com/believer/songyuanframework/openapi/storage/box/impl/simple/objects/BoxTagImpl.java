@@ -11,11 +11,6 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxTag;
  */
 public class BoxTagImpl implements BoxTag {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8247821214802807121L;
-
     /** tag id. */
     private String id;
 

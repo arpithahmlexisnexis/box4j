@@ -17,7 +17,7 @@ public class Box4JTestSuite extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTestSuite(RestTestCase.class);
         suite.addTestSuite(XMLTestCase.class);
-        //suite.addTestSuite(SoapTestCase.class);
+        suite.addTestSuite(SoapTestCase.class);
 
         return suite;
     }

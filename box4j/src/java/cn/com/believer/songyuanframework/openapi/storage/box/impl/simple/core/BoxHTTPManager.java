@@ -41,17 +41,11 @@ import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstan
 public final class BoxHTTPManager {
 
     /** log4j object. */
-    protected static final Logger LOGGER = Logger.getLogger(BoxHTTPManager.class);
+    protected static final Logger LOGGER = Logger
+            .getLogger(BoxHTTPManager.class);
 
-    /**
-     * singleton holder.
-     */
-    private static final class SingletonHolder {
-        /**
-         * only instance.
-         */
-        private static final BoxHTTPManager INSTANCE = new BoxHTTPManager();
-    }
+    /** singleton instance. */
+    private static BoxHTTPManager instance;
 
     /** config properties. */
     private Properties config;
@@ -67,17 +61,25 @@ public final class BoxHTTPManager {
         MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
 
         // max connections per host
-        String maxConPerHost = config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_MAXCONNECTIONSPERHOST);
-        connectionManager.getParams().setDefaultMaxConnectionsPerHost(Integer.parseInt(maxConPerHost));
+        String maxConPerHost = config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_MAXCONNECTIONSPERHOST);
+        connectionManager.getParams().setDefaultMaxConnectionsPerHost(
+                Integer.parseInt(maxConPerHost));
         // max total connections
-        String maxTotalCons = config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_MAXTOTALCONNECTIONS);
-        connectionManager.getParams().setMaxTotalConnections(Integer.parseInt(maxTotalCons));
+        String maxTotalCons = config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_MAXTOTALCONNECTIONS);
+        connectionManager.getParams().setMaxTotalConnections(
+                Integer.parseInt(maxTotalCons));
         // connection time out
-        String connTimeout = config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_CONNECTIONTIMEOUT);
-        connectionManager.getParams().setConnectionTimeout(Integer.parseInt(connTimeout));
+        String connTimeout = config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_CONNECTIONTIMEOUT);
+        connectionManager.getParams().setConnectionTimeout(
+                Integer.parseInt(connTimeout));
         // socket time out
-        String soConnTimeout = config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_SOCONNECTIONTIMEOUT);
-        connectionManager.getParams().setSoTimeout(Integer.parseInt(soConnTimeout));
+        String soConnTimeout = config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_SOCONNECTIONTIMEOUT);
+        connectionManager.getParams().setSoTimeout(
+                Integer.parseInt(soConnTimeout));
 
         this.hc = new HttpClient(connectionManager);
     }
@@ -95,18 +97,27 @@ public final class BoxHTTPManager {
      */
     public void setConfig(Properties config) {
         this.config = config;
-        HttpConnectionManager connectionManager = this.hc.getHttpConnectionManager();
-        String maxConPerHost = config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_MAXCONNECTIONSPERHOST);
-        connectionManager.getParams().setDefaultMaxConnectionsPerHost(Integer.parseInt(maxConPerHost));
+        HttpConnectionManager connectionManager = this.hc
+                .getHttpConnectionManager();
+        String maxConPerHost = config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_MAXCONNECTIONSPERHOST);
+        connectionManager.getParams().setDefaultMaxConnectionsPerHost(
+                Integer.parseInt(maxConPerHost));
         // max total connections
-        String maxTotalCons = config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_MAXTOTALCONNECTIONS);
-        connectionManager.getParams().setMaxTotalConnections(Integer.parseInt(maxTotalCons));
+        String maxTotalCons = config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_MAXTOTALCONNECTIONS);
+        connectionManager.getParams().setMaxTotalConnections(
+                Integer.parseInt(maxTotalCons));
         // connection time out
-        String connTimeout = config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_CONNECTIONTIMEOUT);
-        connectionManager.getParams().setConnectionTimeout(Integer.parseInt(connTimeout));
+        String connTimeout = config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_CONNECTIONTIMEOUT);
+        connectionManager.getParams().setConnectionTimeout(
+                Integer.parseInt(connTimeout));
         // socket time out
-        String soConnTimeout = config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_SOCONNECTIONTIMEOUT);
-        connectionManager.getParams().setSoTimeout(Integer.parseInt(soConnTimeout));
+        String soConnTimeout = config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_SOCONNECTIONTIMEOUT);
+        connectionManager.getParams().setSoTimeout(
+                Integer.parseInt(soConnTimeout));
     }
 
     /**
@@ -117,19 +128,28 @@ public final class BoxHTTPManager {
 
         try {
             String userDir = System.getProperty("user.dir");
-            String propertyPath = userDir + File.separator + BoxConstant.CONFIG_FILE_NAME;
+            String propertyPath = userDir + File.separator
+                    + BoxConstant.CONFIG_FILE_NAME;
             InputStream in = new FileInputStream(new File(propertyPath));
             this.config.load(in);
         } catch (FileNotFoundException e) {
-            LOGGER.warn("box4j-config.properties not found in classpath, use box4j-config-default.properties.");
-            InputStream in = this.getClass().getResourceAsStream(BoxConstant.CONFIG_FILE_DEFAULT_NAME);
+            LOGGER
+                    .warn("box4j-config.properties not found in classpath, use box4j-config-default.properties.");
+            InputStream in = this.getClass().getResourceAsStream(
+                    BoxConstant.CONFIG_FILE_DEFAULT_NAME);
             try {
                 this.config.load(in);
             } catch (IOException e1) {
-                LOGGER.fatal("io exception happened when loading box4j-config-default.properties", e1);
+                LOGGER
+                        .fatal(
+                                "io exception happened when loading box4j-config-default.properties",
+                                e1);
             }
         } catch (IOException e) {
-            LOGGER.fatal("io exception occured when read box4j-config.properties", e);
+            LOGGER
+                    .fatal(
+                            "io exception occured when read box4j-config.properties",
+                            e);
         }
 
     }
@@ -140,7 +160,10 @@ public final class BoxHTTPManager {
      * @return XDriveHTTPManager
      */
     public static BoxHTTPManager getBoxHTTPManager() {
-        return SingletonHolder.INSTANCE;
+        if (instance == null) {
+            instance = new BoxHTTPManager();
+        }
+        return instance;
     }
 
     /**
@@ -157,11 +180,13 @@ public final class BoxHTTPManager {
     public String doPost(String url, String postData) throws IOException {
         long t1 = System.currentTimeMillis();
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("##### doPost-start #####, url=" + url + ", postData=\n" + postData);
+            LOGGER.debug("##### doPost-start #####, url=" + url
+                    + ", postData=\n" + postData);
         }
         String response = null;
         PostMethod pMethod = new PostMethod(url);
-        if ("yes".equalsIgnoreCase(config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
+        if ("yes".equalsIgnoreCase(config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
             pMethod.getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
         }
         try {
@@ -173,8 +198,9 @@ public final class BoxHTTPManager {
             pMethod.releaseConnection();
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("##### doPost-end   #####, used time: " + (System.currentTimeMillis() - t1)
-                    + " ms,response=\n" + response + "\n");
+            LOGGER.debug("##### doPost-end   #####, used time: "
+                    + (System.currentTimeMillis() - t1) + " ms,response=\n"
+                    + response + "\n");
         }
         return response;
     }
@@ -193,17 +219,20 @@ public final class BoxHTTPManager {
     public String doPostXML(String url, String postData) throws IOException {
         long t1 = System.currentTimeMillis();
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("##### doPost-start #####, url=" + url + ", postData=\n" + postData);
+            LOGGER.debug("##### doPost-start #####, url=" + url
+                    + ", postData=\n" + postData);
         }
         String response = null;
         PostMethod pMethod = new PostMethod(url);
-        if ("yes".equalsIgnoreCase(config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
+        if ("yes".equalsIgnoreCase(config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
             pMethod.getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
         }
         try {
             // NameValuePair type = new NameValuePair("data", postData);
             // pMethod.setRequestBody(new NameValuePair[] { type });
-            StringRequestEntity xmlRequestEntity = new StringRequestEntity(postData);
+            StringRequestEntity xmlRequestEntity = new StringRequestEntity(
+                    postData);
             pMethod.setRequestEntity(xmlRequestEntity);
             this.hc.executeMethod(pMethod);
             response = pMethod.getResponseBodyAsString();
@@ -211,8 +240,9 @@ public final class BoxHTTPManager {
             pMethod.releaseConnection();
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("##### doPost-end   #####, used time: " + (System.currentTimeMillis() - t1)
-                    + " ms,response=\n" + response + "\n");
+            LOGGER.debug("##### doPost-end   #####, used time: "
+                    + (System.currentTimeMillis() - t1) + " ms,response=\n"
+                    + response + "\n");
         }
         return response;
     }
@@ -235,7 +265,8 @@ public final class BoxHTTPManager {
             LOGGER.debug("##### doGet-start  #####, url=" + url);
         }
         GetMethod gMethod = new GetMethod(url);
-        if ("yes".equalsIgnoreCase(config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
+        if ("yes".equalsIgnoreCase(config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
             gMethod.getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
         }
         try {
@@ -251,8 +282,9 @@ public final class BoxHTTPManager {
             gMethod.releaseConnection();
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("##### doGet-end    #####, used time: " + (System.currentTimeMillis() - t1)
-                    + " ms,response=\n" + result.asXML() + "\n");
+            LOGGER.debug("##### doGet-end    #####, used time: "
+                    + (System.currentTimeMillis() - t1) + " ms,response=\n"
+                    + result.asXML() + "\n");
         }
         return result;
     }
@@ -273,7 +305,8 @@ public final class BoxHTTPManager {
             LOGGER.debug("##### doGet-start  #####, url=" + url);
         }
         GetMethod gMethod = new GetMethod(url);
-        if ("yes".equalsIgnoreCase(config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
+        if ("yes".equalsIgnoreCase(config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
             gMethod.getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
         }
         try {
@@ -283,7 +316,8 @@ public final class BoxHTTPManager {
             gMethod.releaseConnection();
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("##### doGet-end    #####, used time: " + (System.currentTimeMillis() - t1)
+            LOGGER.debug("##### doGet-end    #####, used time: "
+                    + (System.currentTimeMillis() - t1)
                     + " ms,response is a file, size=" + result.length);
         }
         return result;
@@ -307,7 +341,8 @@ public final class BoxHTTPManager {
         }
         InputStream responseBodyInputStream = null;
         GetMethod gMethod = new GetMethod(url);
-        if ("yes".equalsIgnoreCase(config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
+        if ("yes".equalsIgnoreCase(config
+                .getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
             gMethod.getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
         }
         try {
@@ -329,7 +364,8 @@ public final class BoxHTTPManager {
             gMethod.releaseConnection();
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("##### doGet-end    #####, used time: " + (System.currentTimeMillis() - t1)
+            LOGGER.debug("##### doGet-end    #####, used time: "
+                    + (System.currentTimeMillis() - t1)
                     + " ms,response=[InputStream]\n");
         }
         return inFile;
@@ -346,7 +382,8 @@ public final class BoxHTTPManager {
      * @throws IOException
      *             exception
      */
-    public String doMultipartPost(String url, Map filesHashMap) throws IOException {
+    public String doMultipartPost(String url, Map filesHashMap)
+            throws IOException {
         long t1 = System.currentTimeMillis();
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("doPost, start, url=" + url);
@@ -359,19 +396,23 @@ public final class BoxHTTPManager {
         while (it.hasNext()) {
             String key = (String) it.next();
             byte[] data = (byte[]) filesHashMap.get(key);
-            ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(key, data);
-            FilePart filePart = new FilePart("Filedata" + i, byteArrayPartSource);
+            ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(
+                    key, data);
+            FilePart filePart = new FilePart("Filedata" + i,
+                    byteArrayPartSource);
             parts[i] = filePart;
             i++;
         }
 
-        MultipartRequestEntity requestEntity = new MultipartRequestEntity(parts, pMethod.getParams());
+        MultipartRequestEntity requestEntity = new MultipartRequestEntity(
+                parts, pMethod.getParams());
         pMethod.setRequestEntity(requestEntity);
         this.hc.executeMethod(pMethod);
         byte[] responseBody = pMethod.getResponseBody();
         String response = new String(responseBody);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("doPost, end, used time: " + (System.currentTimeMillis() - t1));
+            LOGGER.debug("doPost, end, used time: "
+                    + (System.currentTimeMillis() - t1));
             LOGGER.debug("doPost, end, response=\n" + response);
         }
         return response;
@@ -401,13 +442,15 @@ public final class BoxHTTPManager {
             FilePart filePart = new FilePart("Filedata" + i, f);
             parts[i] = filePart;
         }
-        MultipartRequestEntity requestEntity = new MultipartRequestEntity(parts, pMethod.getParams());
+        MultipartRequestEntity requestEntity = new MultipartRequestEntity(
+                parts, pMethod.getParams());
         pMethod.setRequestEntity(requestEntity);
         this.hc.executeMethod(pMethod);
         byte[] responseBody = pMethod.getResponseBody();
         String response = new String(responseBody);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("doPost, end, used time: " + (System.currentTimeMillis() - t1));
+            LOGGER.debug("doPost, end, used time: "
+                    + (System.currentTimeMillis() - t1));
             LOGGER.debug("doPost, end, response=\n" + response);
         }
         return response;

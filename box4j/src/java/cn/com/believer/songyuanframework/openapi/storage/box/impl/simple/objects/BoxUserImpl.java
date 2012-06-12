@@ -11,11 +11,6 @@ import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxUser;
  */
 public class BoxUserImpl implements BoxUser {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -5288523827184732078L;
-
     /** login account id. */
     private String login;
 

@@ -3,13 +3,11 @@
  */
 package cn.com.believer.songyuanframework.openapi.storage.box.objects;
 
-import java.io.Serializable;
-
 /**
  * @author Jimmy
  * 
  */
-public interface BoxTag extends Serializable {
+public interface BoxTag {
 
     /**
      * @return the id

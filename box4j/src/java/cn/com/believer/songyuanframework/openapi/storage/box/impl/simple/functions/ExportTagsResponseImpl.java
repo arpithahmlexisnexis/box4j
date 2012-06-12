@@ -18,7 +18,7 @@ public class ExportTagsResponseImpl extends BoxResponseImpl implements
     private List tagList;
 
     /** base64 encoded string. */
-    private String encodedTags;
+    // private String encodedTags;
 
     /**
      * @return the tagList
@@ -38,15 +38,15 @@ public class ExportTagsResponseImpl extends BoxResponseImpl implements
     /**
      * @return the encodedTags
      */
-    public String getEncodedTags() {
-        return this.encodedTags;
-    }
+    // public String getEncodedTags() {
+    //     return this.encodedTags;
+    // }
 
     /**
      * @param encodedTags
      *            the encodedTags to set
      */
-    public void setEncodedTags(String encodedTags) {
-        this.encodedTags = encodedTags;
-    }
+    // public void setEncodedTags(String encodedTags) {
+    //     this.encodedTags = encodedTags;
+    // }
 }

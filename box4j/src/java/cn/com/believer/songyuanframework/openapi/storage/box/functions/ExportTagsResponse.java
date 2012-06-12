@@ -25,11 +25,11 @@ public interface ExportTagsResponse extends BoxResponse {
     /**
      * @return the encodedTags
      */
-    public String getEncodedTags();
+    // public String getEncodedTags();
 
     /**
      * @param encodedTags
      *            the encodedTags to set
      */
-    public void setEncodedTags(String encodedTags);
+    // public void setEncodedTags(String encodedTags);
 }

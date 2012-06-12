@@ -886,6 +886,7 @@ public class BaseBoxTestCase extends TestCase {
             getUpdatesRequest = BoxRequestFactory.createGetUpdatesRequest(apiKey, authToken, "0", String.valueOf(System
                     .currentTimeMillis()), getUpdatesParams);
             getUpdatesResponse = boxExternalAPI.getUpdates(getUpdatesRequest);
+            assertEquals(BoxConstant.STATUS_S_GET_UPDATES, getUpdatesResponse.getStatus());
 
             /** add to tag */
             AddToTagResponse addToTagResponse;

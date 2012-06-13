@@ -197,6 +197,7 @@ public final class BoxHTTPManager {
         }
         String response = null;
         PostMethod pMethod = new PostMethod(url);
+        pMethod.getParams().setContentCharset("UTF-8");
         if ("yes".equalsIgnoreCase(config.getProperty(BoxConstant.CONFIG_HTTPCLIENT_IGNORECOOKIES))) {
             pMethod.getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
         }
@@ -360,7 +361,8 @@ public final class BoxHTTPManager {
             String key = (String) it.next();
             byte[] data = (byte[]) filesHashMap.get(key);
             ByteArrayPartSource byteArrayPartSource = new ByteArrayPartSource(key, data);
-            FilePart filePart = new FilePart("Filedata" + i, byteArrayPartSource);
+            //FilePart filePart = new FilePart("Filedata" + i, byteArrayPartSource);
+            Utf8FilePart filePart = new Utf8FilePart("Filedata" + i, byteArrayPartSource);
             parts[i] = filePart;
             i++;
         }
@@ -398,7 +400,8 @@ public final class BoxHTTPManager {
         Part[] parts = new Part[fileCounts];
         for (int i = 0; i < fileList.size(); i++) {
             File f = (File) fileList.get(i);
-            FilePart filePart = new FilePart("Filedata" + i, f);
+            // FilePart filePart = new FilePart("Filedata" + i, f);
+            Utf8FilePart filePart = new Utf8FilePart("Filedata" + i, f);
             parts[i] = filePart;
         }
         MultipartRequestEntity requestEntity = new MultipartRequestEntity(parts, pMethod.getParams());

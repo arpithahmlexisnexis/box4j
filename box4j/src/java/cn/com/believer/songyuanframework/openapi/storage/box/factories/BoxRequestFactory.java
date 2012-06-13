@@ -27,6 +27,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicket
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.OverwriteRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PrivateShareRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicShareRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicUnshareRequest;
@@ -782,6 +783,39 @@ public class BoxRequestFactory extends BaseBoxFactory {
         uploadRequest.setFolderId(parentFolderId);
         uploadRequest.setDataMap(nameValueMap);
         return uploadRequest;
+    }
+
+    /**
+     * create request object.
+     * 
+     * @return request object
+     */
+    public static OverwriteRequest createOverwriteRequest() {
+        Object obj = newInstanceOf("box4j.config.requestfactory.OverwriteRequest");
+        return (OverwriteRequest) obj;
+    }
+
+    /**
+     * create request object.
+     * 
+     * @param authToken
+     *            auth token
+     * @param asFile
+     *            upload as file flag
+     * @param parentFolderId
+     *            parent folder id
+     * @param nameValueMap
+     *            key is file name, value could be file or byte array.
+     * @return request object
+     */
+    public static OverwriteRequest createOverwriteRequest(String authToken,
+            boolean asFile, String fileId, Map nameValueMap) {
+        OverwriteRequest overwriteRequest = createOverwriteRequest();
+        overwriteRequest.setAuthToken(authToken);
+        overwriteRequest.setAsFile(asFile);
+        overwriteRequest.setFileId(fileId);
+        overwriteRequest.setDataMap(nameValueMap);
+        return overwriteRequest;
     }
 
     /**

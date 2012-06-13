@@ -46,6 +46,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutReq
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.OverwriteRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.OverwriteResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PrivateShareRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PrivateShareResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicShareRequest;
@@ -85,6 +87,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.GetUpdatesMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.LogoutMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.MoveMethod;
+import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.OverwriteMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.PrivateShareMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.PublicShareMethod;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.methods.PublicUnshareMethod;
@@ -176,6 +179,9 @@ public class SimpleBoxImpl implements BoxExternalAPI {
     private UploadMethod uploadMethod = new UploadMethod();
 
     /** box action implementation. */
+    private OverwriteMethod overwriteMethod = new OverwriteMethod();
+
+    /** box action implementation. */
     private GetAccountInfoMethod getAccountInfoMethod = new GetAccountInfoMethod();
 
     /** box action implementation. */
@@ -204,6 +210,19 @@ public class SimpleBoxImpl implements BoxExternalAPI {
      */
     public UploadResponse upload(UploadRequest uploadRequest) throws IOException, BoxException {
         return this.uploadMethod.upload(uploadRequest);
+    }
+
+    /**
+     * @param overwriteRequest
+     *            request
+     * @return response
+     * @throws IOException
+     *             IO exception
+     * @throws BoxException
+     *             box exception
+     */
+    public OverwriteResponse overwrite(OverwriteRequest overwriteRequest) throws IOException, BoxException {
+        return this.overwriteMethod.overwrite(overwriteRequest);
     }
 
     /**

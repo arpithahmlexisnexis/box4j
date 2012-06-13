@@ -43,6 +43,8 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutReq
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.OverwriteRequest;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.OverwriteResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PrivateShareRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PrivateShareResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicShareRequest;
@@ -510,6 +512,20 @@ public interface BoxExternalAPI {
      *             box exception
      */
     UploadResponse upload(UploadRequest uploadRequest) throws IOException,
+            BoxException;
+
+    /**
+     * overwrite files.
+     * 
+     * @param uploadRequest
+     *            request object
+     * @return response object
+     * @throws IOException
+     *             IO exception
+     * @throws BoxException
+     *             box exception
+     */
+    OverwriteResponse overwrite(OverwriteRequest overwriteRequest) throws IOException,
             BoxException;
 
 }

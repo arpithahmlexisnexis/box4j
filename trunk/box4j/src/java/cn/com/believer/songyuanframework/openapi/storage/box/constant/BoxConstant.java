@@ -142,6 +142,9 @@ public class BoxConstant {
     public static final String ACTION_NAME_UPLOAD = "upload";
 
     /** action name. */
+    public static final String ACTION_NAME_OVERWRITE = "overwrite";
+
+    /** action name. */
     public static final String ACTION_NAME_GET_ACCOUNT_INFO = "get_account_info";
 
     /** action name. */

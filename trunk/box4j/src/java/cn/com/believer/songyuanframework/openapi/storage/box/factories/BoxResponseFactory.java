@@ -24,6 +24,7 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetTicket
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.GetUpdatesResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.LogoutResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.MoveResponse;
+import cn.com.believer.songyuanframework.openapi.storage.box.functions.OverwriteResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PrivateShareResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicShareResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.PublicUnshareResponse;
@@ -263,6 +264,16 @@ public class BoxResponseFactory extends BaseBoxFactory {
     public static UploadResponse createUploadResponse() {
         Object obj = newInstanceOf("box4j.config.responsefactory.UploadResponse");
         return (UploadResponse) obj;
+    }
+
+    /**
+     * create response object.
+     * 
+     * @return response object
+     */
+    public static OverwriteResponse createOverwriteResponse() {
+        Object obj = newInstanceOf("box4j.config.responsefactory.OverwriteResponse");
+        return (OverwriteResponse) obj;
     }
 
     /**

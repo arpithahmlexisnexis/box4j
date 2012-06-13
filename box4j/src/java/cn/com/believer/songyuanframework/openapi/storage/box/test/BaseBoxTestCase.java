@@ -9,19 +9,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-
+import junit.framework.TestCase;
 import cn.com.believer.songyuanframework.openapi.storage.box.BoxExternalAPI;
 import cn.com.believer.songyuanframework.openapi.storage.box.constant.BoxConstant;
 import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxRequestFactory;
-import cn.com.believer.songyuanframework.openapi.storage.box.factories.BoxResponseFactory;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddCommentResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.AddToMyBoxRequest;
@@ -77,12 +71,11 @@ import cn.com.believer.songyuanframework.openapi.storage.box.functions.UploadRes
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailRequest;
 import cn.com.believer.songyuanframework.openapi.storage.box.functions.VerifyRegistrationEmailResponse;
 import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.SimpleBoxImpl;
-import cn.com.believer.songyuanframework.openapi.storage.box.impl.simple.core.BoxHTTPManager;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxAbstractFile;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxComment;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxException;
 import cn.com.believer.songyuanframework.openapi.storage.box.objects.BoxUser;
-import junit.framework.TestCase;
+import cn.com.believer.songyuanframework.openapi.storage.box.objects.UploadResult;
 
 /**
  * 
@@ -110,6 +103,7 @@ public class BaseBoxTestCase extends TestCase {
     private String newCreatedFileName;
     private String rootFile1Name;
     private String rootFile2Name;
+    private String rootFile3UmlautsName;
     // private String subFile1Name;
     // private String subFile2Name;
     private String newCreatedFileContent;
@@ -139,6 +133,7 @@ public class BaseBoxTestCase extends TestCase {
         newCreatedFileName = "File_Name" + System.currentTimeMillis();
         rootFile1Name = newCreatedFileName + "1";
         rootFile2Name = newCreatedFileName + "2";
+        rootFile3UmlautsName = newCreatedFileName + "3ÄÖÜäöüßéèêáàâ";
         // subFile1Name = newCreatedFileName + "3";
         // subFile2Name = newCreatedFileName + "4";
         newCreatedFileContent = "File_Content" + System.currentTimeMillis();
@@ -165,6 +160,7 @@ public class BaseBoxTestCase extends TestCase {
             // String subFolder2Id = "";
             String rootFile1Id = "";
             String rootFile2Id = "";
+            // String rootFile3Id = "";
             // String subFile1Id = "";
             // String subFile2Id = "";
 
@@ -489,16 +485,31 @@ public class BaseBoxTestCase extends TestCase {
             nameByteHashMapSpecialChar.put(specialCharName, (newCreatedFileContent + "1").getBytes());
             uploadRequest = BoxRequestFactory.createUploadRequest(authToken, false, "0", nameByteHashMapSpecialChar);
             uploadResponse = boxExternalAPI.upload(uploadRequest);
+            assertEquals(BoxConstant.STATUS_UPLOAD_SOME_FILES_FAILED, uploadResponse.getStatus());
+            assertTrue(uploadResponse.getUploadResultList().size() == 1);
+            assertEquals(BoxConstant.STATUS_INVALID_NAME, ((UploadResult)uploadResponse.getUploadResultList().get(0)).getErrorInfo());
 
+            // upload files as byte map
             HashMap nameByteHashMap = new HashMap();
             nameByteHashMap.put(rootFile1Name, (newCreatedFileContent + "1").getBytes());
             nameByteHashMap.put(rootFile2Name, (newCreatedFileContent + "2").getBytes());
             uploadRequest = BoxRequestFactory.createUploadRequest(authToken, false, "0", nameByteHashMap);
             uploadResponse = boxExternalAPI.upload(uploadRequest);
+            assertEquals(BoxConstant.STATUS_UPLOAD_OK, uploadResponse.getStatus());
             assertTrue(uploadResponse.getUploadResultList().size() == 2);
+            assertNull(((UploadResult)uploadResponse.getUploadResultList().get(0)).getErrorInfo());
+            assertNull(((UploadResult)uploadResponse.getUploadResultList().get(1)).getErrorInfo());
 
-            // upload multiple files
+            // upload file with umlauts in name as byte map
+            HashMap nameByteHashMapUmlauts = new HashMap();
+            nameByteHashMapUmlauts.put(rootFile3UmlautsName, (newCreatedFileContent + "1").getBytes());
+            uploadRequest = BoxRequestFactory.createUploadRequest(authToken, false, "0", nameByteHashMapUmlauts);
+            uploadResponse = boxExternalAPI.upload(uploadRequest);
+            assertEquals(BoxConstant.STATUS_UPLOAD_OK, uploadResponse.getStatus());
+            assertTrue(uploadResponse.getUploadResultList().size() == 1);
+            assertNull(((UploadResult)uploadResponse.getUploadResultList().get(0)).getErrorInfo());
 
+            // upload files as File
             Map fileMap = new HashMap();
             File tmpFile = File.createTempFile(newCreatedFileName + "3", ".txt");
             String subFile1Name = tmpFile.getName();
@@ -510,7 +521,22 @@ public class BaseBoxTestCase extends TestCase {
             fileMap.put(subFile2Name, tmpFile);
             uploadRequest = BoxRequestFactory.createUploadRequest(authToken, true, firstFolderId, fileMap);
             uploadResponse = boxExternalAPI.upload(uploadRequest);
+            assertEquals(BoxConstant.STATUS_UPLOAD_OK, uploadResponse.getStatus());
             assertTrue(uploadResponse.getUploadResultList().size() == 2);
+            assertNull(((UploadResult)uploadResponse.getUploadResultList().get(0)).getErrorInfo());
+            assertNull(((UploadResult)uploadResponse.getUploadResultList().get(1)).getErrorInfo());
+
+            // upload file with umlauts in name as File
+            Map fileMapUmlauts = new HashMap();
+            tmpFile = File.createTempFile(newCreatedFileName + "5ÄÖÜäöüßéèêáàâ", ".txt");
+            String subFile3Name = tmpFile.getName();
+            tmpFile.deleteOnExit();
+            fileMapUmlauts.put(subFile3Name, tmpFile);
+            uploadRequest = BoxRequestFactory.createUploadRequest(authToken, true, firstFolderId, fileMapUmlauts);
+            uploadResponse = boxExternalAPI.upload(uploadRequest);
+            assertEquals(BoxConstant.STATUS_UPLOAD_OK, uploadResponse.getStatus());
+            assertTrue(uploadResponse.getUploadResultList().size() == 1);
+            assertNull(((UploadResult)uploadResponse.getUploadResultList().get(0)).getErrorInfo());
 
             /** get account tree. by the way check the create file & folder. */
             GetAccountTreeResponse getAccountTreeResponse;
@@ -545,8 +571,8 @@ public class BaseBoxTestCase extends TestCase {
             getAccountTreeResponse = boxExternalAPI.getAccountTree(getAccountTreeRequest);
             DefaultMutableTreeNode rootTree = getAccountTreeResponse.getTree();
 
-            boolean existFirstFolder = false, existFirstFile1 = false, existFirstFile2 = false;
-            boolean existSubFolder1 = false, existSubFolder2 = false, existSubFile1 = false, existSubFile2 = false;
+            boolean existFirstFolder = false, existFirstFile1 = false, existFirstFile2 = false, existFirstFile3 = false;
+            boolean existSubFolder1 = false, existSubFolder2 = false, existSubFile1 = false, existSubFile2 = false, existSubFile3 = false;
 
             assertTrue(rootTree.getChildCount() > 0);
             for (int i = 0; i < rootTree.getChildCount(); i++) {
@@ -573,25 +599,35 @@ public class BaseBoxTestCase extends TestCase {
                             existSubFile2 = true;
                             // subFile2Id = subFile.getId();
                         }
+                        if (subFileName.equals(subFile3Name)) {
+                            existSubFile3 = true;
+                            // subFile3Id = subFile.getId();
+                        }
                     }
                 }
-                if (fileName.equals(newCreatedFileName + "1")) {
+                if (fileName.equals(rootFile1Name)) {
                     existFirstFile1 = true;
                     rootFile1Id = aFile.getId();
                 }
-                if (fileName.equals(newCreatedFileName + "2")) {
+                if (fileName.equals(rootFile2Name)) {
                     existFirstFile2 = true;
                     rootFile2Id = aFile.getId();
+                }
+                if (fileName.equals(rootFile3UmlautsName)) {
+                    existFirstFile3 = true;
+                    // rootFile3Id = aFile.getId();
                 }
             }
 
             assertTrue(existFirstFolder);
             assertTrue(existFirstFile1);
             assertTrue(existFirstFile2);
+            assertTrue(existFirstFile3);
             assertTrue(existSubFolder1);
             assertTrue(existSubFolder2);
             assertTrue(existSubFile1);
             assertTrue(existSubFile2);
+            assertTrue(existSubFile3);
 
             /** download */
             DownloadResponse downloadResponse;
@@ -606,7 +642,7 @@ public class BaseBoxTestCase extends TestCase {
             File rootFile2File = new File("tmp" + System.currentTimeMillis());
             downloadRequest = BoxRequestFactory.createDownloadRequest(authToken, rootFile2Id, true, rootFile2File);
             boxExternalAPI.download(downloadRequest);
-            assertEquals((newCreatedFileContent + "1").getBytes().length, rootFile2File.length());
+            assertEquals((newCreatedFileContent + "2").getBytes().length, rootFile2File.length());
             rootFile2File.delete();
 
             /** set description */

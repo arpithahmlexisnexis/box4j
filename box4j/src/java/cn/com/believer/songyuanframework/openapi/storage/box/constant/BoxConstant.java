@@ -515,6 +515,12 @@ public class BoxConstant {
     /** status code. */
     public static final String STATUS_E_INVALID_TIMESTAMP = "e_invalid_timestamp";
 
+    /** status code. */
+    public static final String STATUS_INVALID_NAME = "invalid_name";
+
+    /** status code. */
+    public static final String STATUS_UPLOAD_SOME_FILES_FAILED = "upload_some_files_failed";
+
     // 
     // request factory interface key
 
